@@ -6,9 +6,22 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smartphone Products</title>
+    <script>
+        var store_name = "Emily Melchor";
+        var hits= 1;
+        spins = 10;
+        var is_game_over= true;
+    </script>
 </head>
 <body>
-    <h1>Emily's Used Smart Phone Store</h1>
+    <header>
+        <h1>
+        <script>
+            document.write(store_name);
+        </script>'s
+        Used Smart Phone Store
+        </h1>
+    </header>
     <div><main>
         <section class="item" onmouseover="this.className='item rotate';" onclick="this.className='item';">
             <h2>HTC</h2>
@@ -40,6 +53,12 @@
             <img src="http://dport96.github.io/ITM352/morea/080.flow-control-II/Blackberry.jpg">
         </section>
     </main></div>
-    <h1>Your One Stop Phone Shop</h1>
+    <footer>
+        <h1>Your One Stop Phone Shop
+        <script>
+          document.write(store_name);  
+        </script>
+        </h1>
+    </footer>
 </body>
 </html>
