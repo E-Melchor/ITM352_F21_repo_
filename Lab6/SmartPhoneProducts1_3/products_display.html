@@ -16,7 +16,6 @@
     <header>
         <span id='name_span' style='font-size: 200%;'>
         <script>
-            document.write('<b>' + first_name +"</b> <i>" + last_name + '</i>');
             document.write(`<b>${first_name}</b> <i>${last_name}</i>`)
         </script>'s
         Used Smart Phone Store
@@ -27,43 +26,57 @@
             Hit/Spin:<span id="hit_spin_span">0</span>
             </p>
     </header>
-    <div><main>
-        <section class="item" onmouseover="this.className='item rotate';spins_span.innerHTML=++spins" onclick="this.className='item';hits_span.innerHTML=++hits;" hit_spin_span.innerHTML = hits_span.innerHTML/spins_span.innerHTML;>
+    <div>
+        <main>
+        <section class="item" onmouseover="this.className ='item rotate'; spins_span.innerHTML=++spins; hit_spin_span.innerHTML = (hits/spins).toFixed(2);" onclick="this.className='item' ;hits_span.innerHTML=++hits; hit_spin_span.innerHTML = (hits/spins).toFixed(2);">
             <h2>HTC</h2>
             <p>&dollar;40.00</p>
             <img src="http://dport96.github.io/ITM352/morea/080.flow-control-II/HTC.jpg">
         </section>
 
-        <section class="item" onmouseover="this.className='item rotate';spins_span.innerHTML=++spins" onclick="this.className='item';hits_span.innerHTML=++hits">
+        <section class="item" onmouseover="this.className ='item rotate'; spins_span.innerHTML=++spins; hit_spin_span.innerHTML = (hits/spins).toFixed(2);" onclick="this.className='item' ;hits_span.innerHTML=++hits; hit_spin_span.innerHTML = (hits/spins).toFixed(2);">
             <h2>Apple</h2>
             <p>&dollar;75.00</p>
             <img src="http://dport96.github.io/ITM352/morea/080.flow-control-II/iphone-3gs.jpg">
         </section>
 
-        <section class="item" onmouseover="this.className='item rotate';spins_span.innerHTML=++spins" onclick="this.className='item';hits_span.innerHTML=++hits">
+        <section class="item" onmouseover="this.className ='item rotate'; spins_span.innerHTML=++spins; hit_spin_span.innerHTML = (hits/spins).toFixed(2);" onclick="this.className='item' ;hits_span.innerHTML=++hits; hit_spin_span.innerHTML = (hits/spins).toFixed(2);">
             <h2>Nokia</h2>
             <p>&dollar;35.00</p>
             <img src="http://dport96.github.io/ITM352/morea/080.flow-control-II/Nokia.jpg">
         </section>
 
-        <section class="item" onmouseover="this.className='item rotate';spins_span.innerHTML=++spins" onclick="this.className='item';hits_span.innerHTML=++hits">
+        <section class="item" onmouseover="this.className ='item rotate'; spins_span.innerHTML=++spins; hit_spin_span.innerHTML = (hits/spins).toFixed(2);" onclick="this.className='item' ;hits_span.innerHTML=++hits; hit_spin_span.innerHTML = (hits/spins).toFixed(2);">
             <h2>Samsung</h2>
             <p>&dollar;45.00</p>
             <img src="http://dport96.github.io/ITM352/morea/080.flow-control-II/Samsung.jpg">
         </section>
         
-        <section class="item" onmouseover="this.className='item rotate';spins_span.innerHTML=++spins" onclick="this.className='item';hits_span.innerHTML=++hits">
+        <section class="item" onmouseover="this.className ='item rotate'; spins_span.innerHTML=++spins; hit_spin_span.innerHTML = (hits/spins).toFixed(2);" onclick="this.className='item' ;hits_span.innerHTML=++hits; hit_spin_span.innerHTML = (hits/spins).toFixed(2);">
             <h2>Blackberry</h2>
             <p>&dollar;10.00</p>
             <img src="http://dport96.github.io/ITM352/morea/080.flow-control-II/Blackberry.jpg">
         </section>
-    </main></div>
+    </main>
+    </div>
     <footer>
         <h1>Your One Stop Phone Shop
         <script>
           document.write(store_name);  
         </script>
         </h1>
+        <table border="1" style="margin-left: auto; margin-right: auto; text-align: center;">
+        <script>
+            var line=1;
+            var now = new Date();
+            document.write(`
+            <tr><th colspan="2"><h1>Your One Stop For Used Phones - ${first_name[0]+"."+ last_name[0]+"."}'s</h1></th></tr>
+            <tr><td>${line}</td><td><br />Copyright @ ${first_name +" "+ last_name}</td></tr>
+            <tr><td>${++line}</td><td>${now}}</td></tr>
+            <tr><td>${++line}</td><td>11:15 AM</td></tr>
+            `);
+        </script>
+        </table>
     </footer>
 </body>
 </html>
