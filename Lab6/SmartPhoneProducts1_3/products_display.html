@@ -28,7 +28,7 @@
     </header>
     <div>
         <main>
-        <section class="item" onmouseover="this.className ='item rotate'; spins_span.innerHTML=++spins; hit_spin_span.innerHTML = (hits/spins).toFixed(2);" onclick="this.className='item' ;hits_span.innerHTML=++hits; hit_spin_span.innerHTML = (hits/spins).toFixed(2);">
+        <section class="item" onmouseover="this.className ='item rotate'; spins_span.innerHTML=++spins; hit_spin_span.innerHTML = (hits/spins).toFixed(2);" onclick="this.className='item';hits_span.innerHTML=++hits; hit_spin_span.innerHTML = (hits/spins).toFixed(2);">
             <h2>HTC</h2>
             <p>&dollar;40.00</p>
             <img src="http://dport96.github.io/ITM352/morea/080.flow-control-II/HTC.jpg">
@@ -72,8 +72,8 @@
             document.write(`
             <tr><th colspan="2"><h1>Your One Stop For Used Phones - ${first_name[0]+"."+ last_name[0]+"."}'s</h1></th></tr>
             <tr><td>${line}</td><td><br />Copyright @ ${first_name +" "+ last_name}</td></tr>
-            <tr><td>${++line}</td><td>${now}}</td></tr>
-            <tr><td>${++line}</td><td>11:15 AM</td></tr>
+            <tr><td>${++line}</td><td>${now.getFullYear()}</td></tr>
+            <tr><td>${++line}</td><td>${[(now.getHours()+ 11) % 12 + 1]}:${now.innerHTML=now.getMinutes()}${(now.getHours < 12)?'AM':'PM'}</td></tr>
             `);
         </script>
         </table>
