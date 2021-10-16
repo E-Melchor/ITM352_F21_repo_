@@ -1,6 +1,22 @@
+<style>
+  td{
+    border: 1px solid black; text-align: center;
+  }
+  tr:hover {background-color: yellow;}
+</style>
+<table style="border: 1px solid black; text-align: center;"
+    onclick="
+      new_row = this.appendChild(document.createElement('tr'));
+      for(i = 1; i <= this.rows[0].cells.length; i++) {
+      new_cell = this.appendChild(document.createElement('td'));
+      new_cell.innerHTML = 'xxx';
+      }
+">
+<tbody id= "prodTableBody"> <tr style="border: 1px solid black;"><th style="border: 1px solid black;">Product Name</th><th>Price</th></tr>
+
 <script>
 //product data
-var product_quantities = [1,2,3,2,1];
+var product_quantities = [1,2,4,8,10];
 
 //array of all products
 products = [
@@ -11,12 +27,9 @@ products = [
  { 'name': 'large jawbreaker', 'price': 0.10 }
 ];
 
-document.write(`
-<table style="border: 1px solid black; text-align: center;" onclick="this.appendChild(document.createElement('tr'));
-">
-<tbody> <tr style="border: 1px solid black;"><th style="border: 1px solid black;">Product Name</th><th>Price</th></tr>
-`);
-for(let prodObj of products) {
+for(let prodObj of products)
+//or can use --> for (let i in products) and ${products[1].name}
+{
   document.write(`
 <tr style="border: 1px solid black;"><td style="border: 1px solid black;">${prodObj.name}</td><td>${prodObj.price}</td></tr>
   `);
@@ -24,6 +37,14 @@ for(let prodObj of products) {
 document.write(`</tbody>
 </table>`);
 </script>
+
+<input type="button" value="Delete Last Row"
+    onclick="
+      prodTableBody.deleteRow(prodTableBody.rows.length-1);
+      "
+>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
