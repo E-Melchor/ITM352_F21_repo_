@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="./CSS/products-style.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smartphone Products</title>
+    <script src="./products_data.js">
+    </script>
+</head>
+<body>
+    <h1>Emily's Used Smart Phone Store</h1>
+    <div><main>
+    <script>
+        for(i in products) {
+        document.write(`
+        <section class="item">
+            <h2>${products[i].brand}</h2>
+            <p>$${products[i].price}</p>
+            <img src=${products[i].image}>
+        </section>
+        `);
+        }
+    </script>
+
+    </main></div>
+    <h1>Your One Stop Phone Shop</h1>
+</body>
+</html>
