@@ -2,4 +2,4 @@
 document.write();
 eval();
 Number("");
-//Exercise 2
+
