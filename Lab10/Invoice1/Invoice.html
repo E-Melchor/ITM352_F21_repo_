@@ -9,9 +9,6 @@
 
 //exercise 3
 
-// array of all products
-// corresponds to product_quantities array
-// product_quantities[i] is the quantity for products[i]
 products = [
  { 'name': 'small gumball', 'price': 0.02 },
  { 'name': 'medium gumball', 'price': 0.05 },
@@ -38,7 +35,6 @@ document.write(`</tr>
      var price1 = 4.23;
     var product1 = {};
       product1.item = 'Brown Sugar Boba';
-      product1.quantity = product_quantities[0];
       product1.price = 4.23;
 
       // var product1 = {item: 'Brown Sugar Boba', quantity: 3, price: 4.23};
@@ -60,11 +56,11 @@ document.write(`</tr>
      var price5 = 6.23;
 
     //Compute extended prices
-    var extended_price1 = product_quantities[0] * product1['price'];
-    var extended_price2 = product_quantities[0] * price2;
-    var extended_price3 = product_quantities[0] * price3;
-    var extended_price4 = product_quantities[0] * price4;
-    var extended_price5 = product_quantities[0] * price5;
+    var extended_price1 = product_quantities[0] * product1.price;
+    var extended_price2 = product_quantities[1] * price2;
+    var extended_price3 = product_quantities[2] * price3;
+    var extended_price4 = product_quantities[3] * price4;
+    var extended_price5 = product_quantities[4] * price5;
 
     //Subtotal
     var subtotal = extended_price1+extended_price2+extended_price3+extended_price4+extended_price5;
@@ -104,31 +100,31 @@ document.write(`</tr>
           <script> document.write(`
           <tr>
             <td width="43%">${item1}</td>
-            <td align="center" width="11%">${product1.quantity}</td>
+            <td align="center" width="11%">${product_quantities[0]}</td>
             <td width="13%">\$${product1.price}</td>
             <td width="54%">\$${extended_price1.toFixed(2)}</td>
           </tr>
           <tr>
             <td width="43%">${item2}</td>
-            <td align="center" width="11%">${product_quantities[0]}</td>
+            <td align="center" width="11%">${product_quantities[1]}</td>
             <td width="13%">\$${price2}</td>
             <td width="54%">\$${extended_price2.toFixed(2)}</td>
           </tr>
           <tr>
             <td width="43%">${item3}</td>
-            <td align="center" width="11%">${product_quantities[0]}</td>
+            <td align="center" width="11%">${product_quantities[2]}</td>
             <td width="13%">\$${price3}</td>
             <td width="54%">\$${extended_price3.toFixed(2)}</td>
           </tr>
           <tr>
             <td width="43%">${item4}</td>
-            <td align="center" width="11%">${product_quantities[0]}</td>
+            <td align="center" width="11%">${product_quantities[3]}</td>
             <td width="13%">\$${price4}</td>
             <td width="54%">\$${extended_price4.toFixed(2)}</td>
           </tr>
           <tr>
             <td width="43%">${item5}</td>
-            <td align="center" width="11%">${product_quantities[0]}</td>
+            <td align="center" width="11%">${product_quantities[4]}</td>
             <td width="13%">\$${price5}</td>
             <td width="54%">\$${extended_price5.toFixed(2)}</td>
           </tr>
