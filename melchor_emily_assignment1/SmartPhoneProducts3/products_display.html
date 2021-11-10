@@ -1,0 +1,73 @@
+<!--Products Data-->
+<script>
+    var products = [
+        {
+            "flavor": "Taro Boba",
+            "price": 6.23,
+            "image": "taro.jpg",
+            "quantity_available": 2
+
+        },
+        {
+            "flavor": "Green Tea Boba",
+            "price": 5.23,
+            "image": "matcha.jpg",
+            "quantity_available": 4
+        },
+        {
+            "flavor": "Chai Tea Boba",
+            "price": 3.23,
+            "image": "chai.jpg",
+            "quantity_available": 5
+        },
+        {
+            "flavor": "Brown Sugar Boba",
+            "price": 4.23,
+            "image": "sugar.jpg",
+            "quantity_available": 3
+
+        },
+        {
+
+            "flavor": "Jasmine Tea Boba",
+            "price": 4.23,
+            "image": "jasmine.jpg",
+            "quantity_available": 1
+        }
+    ];
+</script>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="./CSS/products-style.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Jasmine Dragon</title>
+</head>
+
+<body>
+    <h1>The Jasmine Dragon</h1>
+    <h2>Best Boba Shop in Ba Sing Se</h2>
+    <div>
+        <main>
+            <script>
+                for (i in products) {
+                    document.write(`
+        <section class="item">
+            <h2>${products[i].flavor}</h2>
+            <p>$${products[i].price}<br> Number of drinks left: ${products[i].quantity_available}</p>
+            <img src=./images/${products[i].image}>
+        </section>
+        `);
+                }
+            </script>
+
+        </main>
+    </div>
+    <center><img src="./Images/dragon_logo.png"></center>
+</body>
+
+</html>
