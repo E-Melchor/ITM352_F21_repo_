@@ -1,8 +1,13 @@
-//products data
-var products_array = require('./product_data.json');
-
 var express = require('express');
 var app = express();
+
+//products data
+var products = require('./product_data.json');
+app.get("/product_data.js", function (request, response, next) {
+   response.type('.js');
+   var products_str = `var products = ${JSON.stringify(products)};`;
+   response.send(products_str);
+});
 
 // Routing 
 
