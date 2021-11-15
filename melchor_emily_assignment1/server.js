@@ -24,15 +24,15 @@ products.forEach((prod, i) => { prod.total_sold = 0 });
 app.post("/purchase", function (request, response, next) {
    let flavor = products[0]['flavor'];
    let flavor_price = products[0]['price'];
-   var q = request.body['quantity_textbox'];
+   var q = request.body['quantity${i}'];
 
    if (typeof q != 'undefined') {
        if (isNonNegInt(q)) {
            products[0].total_sold += Number(q);
-           response.redirect('invoice.html?quantity=' + q);
+           response.redirect(`invoice.html?quantity=` + q);
        }
        else {
-           response.redirect('invoice.html?error=Invalid%20Quantity&quantity_textbox=' + q);
+           response.redirect(`invoice.html?error=Invalid%20Quantity&quantity${i}=` + q);
        }
    }
    response.send(request.body); 
