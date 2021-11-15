@@ -22,8 +22,8 @@ app.all('*', function (request, response, next) {
 products.forEach((prod, i) => { prod.total_sold = 0 });
 
 app.post("/purchase", function (request, response, next) {
-   let brand = products[0]['brand'];
-   let brand_price = products[0]['price'];
+   let flavor = products[0]['flavor'];
+   let flavor_price = products[0]['price'];
    var q = request.body['quantity_textbox'];
 
    if (typeof q != 'undefined') {
@@ -36,6 +36,7 @@ app.post("/purchase", function (request, response, next) {
        }
    }
    response.send(request.body); 
+   //send to invoice.html?????
    next();
 });
 
