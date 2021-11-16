@@ -1,0 +1,33 @@
+/* General */  
+body {
+    width: 800px;
+    margin: 0 auto;
+    background-image: url("../images/zuko.gif");
+    background-repeat: no-repeat;
+    background-position: right bottom;
+}
+
+/* Typography */  
+h1,h2 {
+    text-align: center;
+}
+h1{
+    font-family: 'Comforter Brush';
+    font-size: 50pt;
+    color: darkgreen;
+}
+th, td {
+    font-family: 'Montagu Slab', serif;
+    text-align: center;
+    background-color: white;
+}
+
+/* Invoice styling */  
+main {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+}
+body {
+    background-color: darkseagreen;
+}

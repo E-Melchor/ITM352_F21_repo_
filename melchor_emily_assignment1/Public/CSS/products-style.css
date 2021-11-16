@@ -2,9 +2,9 @@
 body {
     width: 800px;
     margin: 0 auto;
-    background-image: url("../images/aang.gif"), url("../images/zuko.gif");
+    background-image: url("../images/aang.gif");
     background-repeat: no-repeat;
-    background-position: left bottom, right bottom;
+    background-position: right bottom;
 }
 
 /* Typography */  
@@ -12,20 +12,35 @@ h1,h2 {
     text-align: center;
 }
 h1{
-
+    font-family: 'Comforter Brush';
+    font-size: 50pt;
+    color: darkgreen;
 }
-
-/* block styling */  
+h2, p {
+    font-family: 'Poppins', sans-serif;
+}
+/* Block styling */  
 main {
     display: flex;
     flex-flow: row wrap;
     justify-content: space-around;
 }
+
 /* Form styling */  
-body > :nth-child(2){
-    border: 5px solid black;
-    display: flex;
+body {
+    background-color: darkseagreen;
 }
+input[type=text] {
+    border: 4px solid darkgreen;
+    border-radius: 4px;
+}
+input[type=submit] {
+    background-color: white;
+    color: darkgreen;
+    border-radius: 4px;
+    padding: 30px 30px 30px 30px;
+}
+
 /* Styling the products display */ 
 img {
     height: 200px;
