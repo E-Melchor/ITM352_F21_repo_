@@ -24,19 +24,21 @@ products.forEach((prod, i) => { prod.total_sold = 0 });
 
 app.post("/purchase", function (request, response, next) {
     for (i in products) {
-        var q = request.body[`quantity_textbox${i}`];
+        let q = quantity_textbox[i];
+        let flavor = products[i].flavor;
         if (typeof q != 'undefined') {
             if (isNonNegInt(q)) {
                 products[i].total_sold += Number(q);
-                response.redirect('invoice.html?quantity=' + q);
+                response.send(`<h2>Thank you for purchasing ${q} ${flavor}.</h2>`)
+                //response.redirect('receipt.html?quantity=' + q);
+                //response.send(request.body); Used to test if quantities are being validated
             }
             else {
-                response.redirect('invoice.html?error=Invalid%20Quantity&quantity_textbox=' + q);
+                response.redirect('receipt.html?error=Invalid%20Quantity&quantity_textbox=' + q);
             }
         }
     }
-
-    response.send(request.body);
+    response.send(response.body);
     next();
 });
 
