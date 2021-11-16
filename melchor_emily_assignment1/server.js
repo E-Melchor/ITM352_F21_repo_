@@ -1,3 +1,4 @@
+//server code: modified from info_server_Ex5.js; Lab13
 var express = require('express');
 var app = express();
 app.use(express.urlencoded({ extended: true }));
