@@ -29,9 +29,8 @@ app.post("/purchase", function (request, response, next) {
         if (typeof q != 'undefined') {
             if (isNonNegInt(q)) {
                 products[i].total_sold += Number(q);
-                response.send(`<h2>Thank you for purchasing ${q} ${flavor}.</h2>`)
                 //response.redirect('receipt.html?quantity=' + q);
-                //response.send(request.body); Used to test if quantities are being validated
+                response.send(request.body); //Used to test if quantities are being validated
             }
             else {
                 response.redirect('receipt.html?error=Invalid%20Quantity&quantity_textbox=' + q);
