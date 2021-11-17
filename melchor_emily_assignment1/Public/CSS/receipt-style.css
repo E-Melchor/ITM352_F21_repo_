@@ -1,4 +1,5 @@
-/* General */  
+/* General */
+
 body {
     width: 800px;
     margin: 0 auto;
@@ -7,28 +8,44 @@ body {
     background-position: right bottom;
 }
 
-/* Typography */  
-/* font-family from google fonts */ 
-h1,h2 {
+
+/* Typography */
+
+
+/* font-family from google fonts */
+
+h1,
+h2 {
     text-align: center;
 }
-h1{
+
+h1 {
     font-family: 'Comforter Brush';
     font-size: 50pt;
     color: darkgreen;
 }
-th, td {
+
+h2,
+th,
+td {
     font-family: 'Montagu Slab', serif;
     text-align: center;
+}
+
+th,
+td {
     background-color: white;
 }
 
-/* Invoice styling */  
+
+/* Invoice styling */
+
 main {
     display: flex;
     flex-flow: row wrap;
     justify-content: space-around;
 }
+
 body {
     background-color: darkseagreen;
 }
