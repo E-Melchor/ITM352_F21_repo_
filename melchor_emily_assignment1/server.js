@@ -1,7 +1,10 @@
 //server code: modified from info_server_Ex5.js; Lab13
 var express = require('express');
 var app = express();
+
+//To access inputted data from order_form.html
 app.use(express.urlencoded({ extended: true }));
+var qs = require('querystring');
 
 //products data
 var products = require('./product_data.json');
@@ -24,8 +27,7 @@ products.forEach((prod, i) => { prod.total_sold = 0 });
 
 app.post("/purchase", function (request, response, next) {
     for (i in products) {
-        let q = quantity_textbox[i];
-        let flavor = products[i].flavor;
+        let q = request.body['quantity_textbox' + i];
         if (typeof q != 'undefined') {
             if (isNonNegInt(q)) {
                 products[i].total_sold += Number(q);
@@ -33,7 +35,7 @@ app.post("/purchase", function (request, response, next) {
                 response.send(request.body); //Used to test if quantities are being validated
             }
             else {
-                response.redirect('receipt.html?error=Invalid%20Quantity&quantity_textbox=' + q);
+                response.redirect('receipt.html?error=Invalid%20Quantity&' + qs.stringify(request.body));
             }
         }
     }
