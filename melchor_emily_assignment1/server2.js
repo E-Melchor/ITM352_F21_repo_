@@ -14,8 +14,6 @@ app.get("/product_data.js", function(request, response) {
     response.send(products_str);
 });
 
-// Routing 
-
 // monitor all requests
 app.all('*', function(request, response, next) {
     console.log(request.method + ' to ' + request.path);
@@ -37,11 +35,11 @@ app.post("/purchase", function(request, response, next) {
             }
             //response.send('undefined quantity test fail'); used to test if undefined evaluation was working... it's not...
         } else {
-            response.send(`undefined quantity, test success!`);
+            console.log(`undefined quantity, test success!`);
         } //NEED TO FIX!!!!!!!!
         //response.redirect('receipt.html?quantity=' + quantity);
+        console.log('validated all data');
     }
-    response.send(quantity);
     next();
 });
 
