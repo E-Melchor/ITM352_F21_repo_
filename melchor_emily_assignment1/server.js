@@ -8,16 +8,14 @@ var qs = require('querystring');
 
 //products data
 var products = require('./product_data.json');
-app.get("/product_data.js", function (request, response) {
+app.get("/product_data.js", function(request, response) {
     response.type('.js');
     var products_str = `var products = ${JSON.stringify(products)};`;
     response.send(products_str);
 });
 
-// Routing 
-
 // monitor all requests
-app.all('*', function (request, response, next) {
+app.all('*', function(request, response, next) {
     console.log(request.method + ' to ' + request.path);
     next();
 });
@@ -25,22 +23,21 @@ app.all('*', function (request, response, next) {
 // process purchase request (validate quantities, check quantity available)
 products.forEach((prod, i) => { prod.total_sold = 0 });
 
-app.post("/purchase", function (request, response, next) {
+app.post("/purchase", function(request, response, next) {
     for (i in products) {
-        let q = request.body['quantity_textbox' + i];
-        if (typeof q != 'undefined') {
-            if (isNonNegInt(q)) {
-                products[i].total_sold += Number(q);
-                //response.redirect('receipt.html?quantity=' + q);
-                response.send(request.body); //Used to test if quantities are being validated
+        let quantity = request.body['quantity_textbox' + i];
+        if (typeof quantity != 'undefined') {
+            if (isNonNegInt(quantity)) {
+                products[i].total_sold += Number(quantity);
+                console.log('data is good')
+            } else {
+                console.log('data no good, but validated');
             }
-            else{
-                response.redirect('receipt.html?error=Invalid%20Quantity&' + qs.stringify(request.body));
-            }
-        }
-        else {
-            console.log('nothing inputted test')
-        }
+        } else {
+            console.log(`undefined quantity, test success!`);
+        } //NEED TO FIX!!!
+        //response.redirect('receipt.html?quantity=' + quantity);
+        //response.redirect('receipt.html?error=Invalid%20Quantity&' + qs.stringify(request.body));
     }
     next();
 });
