@@ -30,39 +30,51 @@ products.forEach((prod, i) => { prod.total_sold = 0 });
 //validate quantities on server
 app.post("/purchase", function(request, response, next) {
     var errors = {}; //start with no errors
+    var has_quantity = false; //start with no quantity
     for (i in products) {
-        let quantity = request.body['quantity_textbox' + i]; //access quantities entered from order form
+        //access quantities entered from order form
+        let quantity = request.body['quantity_textbox' + i];
         //check if there is a quantity
-        if (quantity.length !== 0) {
-            //check if quantity is a non-negative integer
-            if (isNonNegInt(quantity)) {
-                products[i].total_sold += Number(quantity);
-                console.log('data is good')
-            }
-            //if quantity is not a non-negative integer, add error
-            else {
-                errors[`invalid_quantity${i}`] = `Please enter a valid quantity for ${products[i].flavor}`;
-            }
+        if (quantity.length > 0) {
+            has_quantity = true;
+        } else {
+            continue;
         }
-        //if there is no quantity
+
+        //check if quantity is a non-negative integer
+        if (has_quantity == true && isNonNegInt(quantity)) {
+            products[i].total_sold += Number(quantity);
+            console.log('data is good')
+        }
+        //if quantity is not a non-negative integer, add error (invalid quantity)
         else {
-            //send back to order form and add error message (need to enter quantities)
-            response.redirect('./order_form.html?' + qstring);
+            errors[`invalid_quantity${i}`] = `Please enter a valid quantity for ${products[i].flavor}`;
         }
-        //response.redirect('receipt.html?quantity=' + quantity);
-        //response.redirect('receipt.html?error=Invalid%20Quantity&' + qs.stringify(request.body));
     }
+    //if there is no quantity
+    if (has_quantity == false) {
+        response.send('need to enter quantities');
+        //add error (missing quantities)
+        //errors[`missing_quantity${i}`] = `Please enter a quantity for ${products[i].flavor}`;
+        //response.redirect('./receiptcopy.html?' + qstring);
+    }
+
     // create query string from request.body
     var qstring = qs.stringify(request.body);
 
     //if there's no errors, create an invoice, otherwise send back to order page with error message
     if (Object.keys(errors).length == 0) {
-        //response.redirect('./receipt.html?quantity=')
-        response.send('put receipt here' + qstring);
+        response.redirect('./receiptcopy.html?' + qstring);
 
     } else {
+        //generate error message based on type of error
+        var error_string = '';
+        for (err in errors) {
+            error_string += errors[err];
+        }
         //send back to order page with error message (need valid quantities)
-        response.redirect('./order_form.html?' + qstring);
+        response.send(error_string)
+            //response.redirect('./order_form.html?' + qstring + error_string);
     }
 });
 

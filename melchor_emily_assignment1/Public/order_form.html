@@ -23,20 +23,22 @@
     <h2 style="font-family: Comforter Brush; font-size: 25pt; color: white; margin-top: 101px;">Best Boba Shop in Ba Sing Se!</h2>
     <p style="text-align: center;">To make your online order, enter the number of drinks you would like underneath the flavor. Click the Place Order button at the bottom of the page to submit your order and receive a receipt.</p><br>
 
-    <!--Add error message, if there's any invalid quantities-->
+    <!--Add error message if there's any invalid quantities-->
     <script>
-        //add error message, from order_page.html in Lab13
+        //add error message, modified from order_page.html in Lab13
         let params = (new URL(document.location)).searchParams;
         var q = params.get('quantity');
-        let brand = products[0]['brand'];
-        let brand_price = products[0]['price'];
 
-        if (params.has('undefined')) {
+        /*if (params.has('undefined')) {
             document.write(`<p style="color:#cc6600
 ">Oops, no quantities were entered! Please enter the number of drinks you would like to order :)</p>`);
-        } else if (params.has('error')) {
-            document.write(`<p>Please enter a valid quantity!</p>`);
+        } else
+        if (params.has('invalid_quantity')) {
+            document.write(`<p>Please enter a positive, whole number!</p>`);
             //document.body.innerHTML = `Thank you for ordering ${params.get('quantity_textbox')} things!`;
+        }*/
+        if (params.has('error_string')) {
+            alert(params.get('error_string'));
         }
     </script>
 
