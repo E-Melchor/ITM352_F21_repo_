@@ -7,6 +7,8 @@
     let params = (new URL(document.location)).searchParams;
     var quantities = []; //start with no quantities
 
+    //from Assignment1 Workshop
+    //if form was submitted on order_form.html, get quantity if it is in the query string
     if (params.has('purchase_order')) {
         for (i = 0; i < products.length; i++) {
             if (params.has(`quantity_textbox${i}`)) {
@@ -115,6 +117,7 @@
     <p>
         <b>Jasmine Dragon has a special discount when you order online!</b> <br> A subtotal between $15 and $30 will include a $2.50 discount. <br> A subtotal between $30 and $50 will include a $5 discount. <br> Subtotals over $50 will include a 15% discount.
     </p>
+    <input type="button" name="to_order_form" value="Order More" onclick="window.location.href ='./order_form.html'">
 </body>
 
 </html>
