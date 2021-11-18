@@ -1,6 +1,6 @@
 //server code: modified from info_server_Ex5.js in Lab13
 
-//create server framework with express package
+//create server framework with express
 var express = require('express');
 var app = express();
 
@@ -27,29 +27,52 @@ app.all('*', function(request, response, next) {
 // process purchase request (validate quantities, check quantity available)
 products.forEach((prod, i) => { prod.total_sold = 0 });
 
-//validate quantities on server
+//route to validate quantities on server
 app.post("/purchase", function(request, response, next) {
-    var errors = {};
+    var errors = []; //start with no errors
+    var has_quantity = false; //start with no quantity
+
+    //use loop to validate all product quantities
     for (i in products) {
+        //access quantities entered from order form
         let quantity = request.body['quantity_textbox' + i];
-        if (typeof quantity != 'undefined') {
-            if (isNonNegInt(quantity)) {
-                products[i].total_sold += Number(quantity);
-                console.log('data is good')
-            } else {
-                errors[`invalid_quantity${i}`] = `Please enter a valid quantity for ${products[i].flavor}`;
-            }
+        //check if there is a quantity; if not, has_quantity will still be false
+        if (quantity.length > 0) {
+            has_quantity = true;
         } else {
-            console.log(`undefined quantity, test success!`);
+            continue;
         }
-        //response.redirect('receipt.html?quantity=' + quantity);
-        //response.redirect('receipt.html?error=Invalid%20Quantity&' + qs.stringify(request.body));
+
+        //check if quantity is a non-negative integer
+        if (has_quantity == true && isNonNegInt(quantity)) {
+            products[i].total_sold += Number(quantity);
+        }
+        //if quantity is not a non-negative integer, add error (invalid quantity)
+        else {
+            errors[`invalid_quantity${i}`] = `Please enter a valid quantity for ${products[i].flavor}`;
+        }
     }
-    //If there's no errors, create an invoice, otherwise send back to order page with error message
+    //if there are no quantities, send back to order page with message (need quantities)
+    if (has_quantity == false) {
+        errors['missing_quantities'] = 'Please enter a quantity!';
+    }
+
+    // create query string from request.body
+    var qstring = qs.stringify(request.body);
+
+    //if there's no errors, create a receipt
     if (Object.keys(errors).length == 0) {
-        response.send('put invoice here');
+        response.redirect('./receipt.html?' + qstring);
+
     } else {
-        response.send(errors);
+        //if there's errors
+        //generate error message based on type of error
+        let error_string = {};
+        for (err in errors) {
+            error_string += errors[err];
+        }
+        //send back to order page with error message
+        response.redirect('./order_form.html?' + qstring + `error_string=${err}`);
     }
 });
 
