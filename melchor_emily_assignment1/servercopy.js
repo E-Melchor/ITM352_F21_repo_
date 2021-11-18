@@ -27,14 +27,16 @@ app.all('*', function(request, response, next) {
 // process purchase request (validate quantities, check quantity available)
 products.forEach((prod, i) => { prod.total_sold = 0 });
 
-//validate quantities on server
+//route to validate quantities on server
 app.post("/purchase", function(request, response, next) {
     var errors = {}; //start with no errors
     var has_quantity = false; //start with no quantity
+
+    //use loop to validate all product quantities
     for (i in products) {
         //access quantities entered from order form
         let quantity = request.body['quantity_textbox' + i];
-        //check if there is a quantity
+        //check if there is a quantity; if not, has_quantity will still be false
         if (quantity.length > 0) {
             has_quantity = true;
         } else {
@@ -44,18 +46,15 @@ app.post("/purchase", function(request, response, next) {
         //check if quantity is a non-negative integer
         if (has_quantity == true && isNonNegInt(quantity)) {
             products[i].total_sold += Number(quantity);
-            console.log('data is good')
         }
         //if quantity is not a non-negative integer, add error (invalid quantity)
         else {
             errors[`invalid_quantity${i}`] = `Please enter a valid quantity for ${products[i].flavor}`;
         }
     }
-    //if there is no quantity
+    //if there are no quantities, send back to order page with message (need quantities)
     if (has_quantity == false) {
         response.send('need to enter quantities');
-        //add error (missing quantities)
-        //errors[`missing_quantity${i}`] = `Please enter a quantity for ${products[i].flavor}`;
         //response.redirect('./receiptcopy.html?' + qstring);
     }
 
