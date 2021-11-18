@@ -24,27 +24,39 @@ app.all('*', function(request, response, next) {
 products.forEach((prod, i) => { prod.total_sold = 0 });
 
 app.post("/purchase", function(request, response, next) {
-    var errors = {};
+    var errors = {}; //start with no errors
     for (i in products) {
-        let quantity = request.body['quantity_textbox' + i];
-        if (typeof quantity != 'undefined') {
+        let quantity = request.body['quantity_textbox' + i]; //access quantities entered from order form
+        //check if there is a quantity
+        if (quantity.length !== 0) {
+            //check if quantity is a non-negative integer
             if (isNonNegInt(quantity)) {
                 products[i].total_sold += Number(quantity);
                 console.log('data is good')
-            } else {
+            }
+            //if quantity is not a non-negative integer, add error
+            else {
                 errors[`invalid_quantity${i}`] = `Please enter a valid quantity for ${products[i].flavor}`;
             }
-        } else {
-            console.log(`undefined quantity, test success!`);
+        }
+        //if there is no quantity
+        else {
+            //stay on order form and add message
+            response.redirect('./order_form.html?');
         }
         //response.redirect('receipt.html?quantity=' + quantity);
         //response.redirect('receipt.html?error=Invalid%20Quantity&' + qs.stringify(request.body));
     }
-    //If there's no errors, create an invoice, otherwise send back to order page with error message
+    //if there's no errors, create an invoice, otherwise send back to order page with error message
     if (Object.keys(errors).length == 0) {
-        response.send('put invoice here');
+        response.redirect('./receipt.html?quantity=')
+            //response.send('put invoice here');
+
     } else {
-        response.send(errors);
+        //create error message
+
+        //send back to order page with error message
+        response.redirect('./order_form.html?');
     }
 });
 
