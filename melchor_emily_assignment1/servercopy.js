@@ -1,10 +1,14 @@
-//server code: modified from info_server_Ex5.js; Lab13
+//server code: modified from info_server_Ex5.js in Lab13
+
+//create server framework with express
 var express = require('express');
 var app = express();
 
+//querystring package
+var qs = require('querystring');
+
 //To access inputted data from order_form.html
 app.use(express.urlencoded({ extended: true }));
-var qs = require('querystring');
 
 //products data
 var products = require('./product_data.json');
@@ -14,7 +18,7 @@ app.get("/product_data.js", function(request, response) {
     response.send(products_str);
 });
 
-// monitor all requests
+// monitor all requests; from info_server_Ex5.js in Lab13
 app.all('*', function(request, response, next) {
     console.log(request.method + ' to ' + request.path);
     next();
@@ -23,6 +27,7 @@ app.all('*', function(request, response, next) {
 // process purchase request (validate quantities, check quantity available)
 products.forEach((prod, i) => { prod.total_sold = 0 });
 
+//validate quantities on server
 app.post("/purchase", function(request, response, next) {
     var errors = {}; //start with no errors
     for (i in products) {
@@ -41,22 +46,23 @@ app.post("/purchase", function(request, response, next) {
         }
         //if there is no quantity
         else {
-            //stay on order form and add message
-            response.redirect('./order_form.html?');
+            //send back to order form and add error message (need to enter quantities)
+            response.redirect('./order_form.html?' + qstring);
         }
         //response.redirect('receipt.html?quantity=' + quantity);
         //response.redirect('receipt.html?error=Invalid%20Quantity&' + qs.stringify(request.body));
     }
+    // create query string from request.body
+    var qstring = qs.stringify(request.body);
+
     //if there's no errors, create an invoice, otherwise send back to order page with error message
     if (Object.keys(errors).length == 0) {
-        response.redirect('./receipt.html?quantity=')
-            //response.send('put invoice here');
+        //response.redirect('./receipt.html?quantity=')
+        response.send('put receipt here' + qstring);
 
     } else {
-        //create error message
-
-        //send back to order page with error message
-        response.redirect('./order_form.html?');
+        //send back to order page with error message (need valid quantities)
+        response.redirect('./order_form.html?' + qstring);
     }
 });
 

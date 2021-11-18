@@ -1,10 +1,14 @@
-//server code: modified from info_server_Ex5.js; Lab13
+//server code: modified from info_server_Ex5.js in Lab13
+
+//create server framework with express package
 var express = require('express');
 var app = express();
 
+//querystring package
+var qs = require('querystring');
+
 //To access inputted data from order_form.html
 app.use(express.urlencoded({ extended: true }));
-var qs = require('querystring');
 
 //products data
 var products = require('./product_data.json');
@@ -14,7 +18,7 @@ app.get("/product_data.js", function(request, response) {
     response.send(products_str);
 });
 
-// monitor all requests
+// monitor all requests; from info_server_Ex5.js in Lab13
 app.all('*', function(request, response, next) {
     console.log(request.method + ' to ' + request.path);
     next();
@@ -23,6 +27,7 @@ app.all('*', function(request, response, next) {
 // process purchase request (validate quantities, check quantity available)
 products.forEach((prod, i) => { prod.total_sold = 0 });
 
+//validate quantities on server
 app.post("/purchase", function(request, response, next) {
     var errors = {};
     for (i in products) {
