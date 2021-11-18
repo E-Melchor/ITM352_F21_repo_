@@ -25,20 +25,18 @@
 
     <!--Add error message if there's any invalid quantities-->
     <script>
-        //add error message, modified from order_page.html in Lab13
-        let params = (new URL(document.location)).searchParams;
-        var q = params.get('quantity');
+        window.onload = function() {
+            //get query string
+            let params = (new URL(document.location)).searchParams;
 
-        /*if (params.has('undefined')) {
-            document.write(`<p style="color:#cc6600
-">Oops, no quantities were entered! Please enter the number of drinks you would like to order :)</p>`);
-        } else
-        if (params.has('invalid_quantity')) {
-            document.write(`<p>Please enter a positive, whole number!</p>`);
-            //document.body.innerHTML = `Thank you for ordering ${params.get('quantity_textbox')} things!`;
-        }*/
-        if (params.has('error_string')) {
-            alert(params.get('error_string'));
+            /*if (params.has('undefined')) {
+                document.write(`<p style="color:#cc6600
+            ">Oops, no quantities were entered! Please enter the number of drinks you would like to order :)</p>`);
+            }*/
+
+            if (params.has('error_string')) {
+                alert(params.get(error_string));
+            }
         }
     </script>
 
@@ -59,7 +57,7 @@
                     }
                 </script>
             </main>
-            <center><input type="submit" value="Place Order"></center>
+            <center><input type="submit" name="purchase_order" value="Place Order"></center>
         </form>
     </div>
 

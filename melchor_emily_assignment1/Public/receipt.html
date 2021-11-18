@@ -1,43 +1,20 @@
+<!--receipt template from invoice4 WOD-->
+
+<!--get product data from server-->
 <script src="./product_data.js" type="text/javascript"></script>
-
 <script>
+    //get quantities from querystring
     let params = (new URL(document.location)).searchParams;
-    var quantities = [];
-    for (i in products) {
-        quantities[i] = params.get('quantity_textbox' + i);
-    }
+    var quantities = []; //start with no quantities
 
-    function generate_item_rows(product_quantities_array) {
-        for (i in products) {
-            if (product_quantities_array[i] == 0) continue;
-            errors = is_string_non_neg_int(product_quantities_array[i], true);
-            if (errors.length == 0) {
-                extended_price = product_quantities_array[i] * products[i].price;
-                subtotal += extended_price;
-            } else {
-                extended_price = "";
-            };
-            document.write(`
-            <tr>
-            <td width="43%">${products[i].flavor}</td>
-            <td align="center" width="11%">${product_quantities_array[i]}<br><font color = 'red'>${errors.join('<br>')}</font></td>
-            <td width="13%">\$${products[i].price}</td>
-            <td width="54%">\$${extended_price.toFixed(2)}</td>
-            </tr>
-            `);
+    if (params.has('purchase_order')) {
+        for (i = 0; i < products.length; i++) {
+            if (params.has(`quantity_textbox${i}`)) {
+                a_qty = params.get(`quantity_textbox${i}`);
+                quantities[i] = a_qty;
+            }
         }
-    };
-
-    function is_string_non_neg_int(q, returnErrors = false) {
-        //If returnErrors is true, array of errors is returned
-        //others return true if q is a non-neg int.
-        errors = []; // assume no errors at first
-        if (Number(q) != q) errors.push('Not a number!'); // Check if string is a number value
-        if (q < 0) errors.push('Negative value!'); // Check if it is non-negative
-        if (parseInt(q) != q) errors.push('Not an integer!'); // Check that it is an integer
-
-        return returnErrors ? errors : (errors.length == 0)
-    };
+    }
 </script>
 <!DOCTYPE html>
 <html lang="en">
@@ -63,9 +40,25 @@
                 <th width="54%">Extended Price</th>
             </tr>
             <script>
-                subtotal = 0;
-                generate_item_rows(quantities);
+                subtotal = 0; //start subtotal with 0
 
+                //generate item rows for table
+                for (i = 0; i < products.length; i++) {
+                    if (quantities[i] > 0) {
+                        //calculate extended price
+                        extended_price = quantities[i] * products[i].price;
+                        subtotal += extended_price;
+                        //generate the product rows for table
+                        document.write(`
+                        <tr>
+                        <td width="43%">${products[i].flavor}</td>
+                        <td align="center" width="11%">${quantities[i]}</td>
+                        <td width="13%">\$${products[i].price}</td>
+                        <td width="54%">\$${extended_price.toFixed(2)}</td>
+                        </tr>
+                        `);
+                    }
+                }
                 //Tax
                 var tax_rate = .04;
                 var sales_tax = tax_rate * subtotal;
@@ -74,7 +67,7 @@
                 var discount;
                 if (subtotal > 15 && subtotal < 30) {
                     discount = 2.5;
-                } else if (subtotal < 30) {
+                } else if (subtotal >= 30 && subtotal < 50) {
                     discount = 5;
                 } else {
                     discount = subtotal * .15;
@@ -90,7 +83,7 @@
                 <td colspan="3" width="67%">Sub-total</td>
                 <td width="54%">$
                     <script>
-                        document.write(subtotal);
+                        document.write(subtotal.toFixed(2));
                     </script>
                 </td>
             </tr>

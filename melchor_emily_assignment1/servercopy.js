@@ -29,7 +29,7 @@ products.forEach((prod, i) => { prod.total_sold = 0 });
 
 //route to validate quantities on server
 app.post("/purchase", function(request, response, next) {
-    var errors = {}; //start with no errors
+    var errors = []; //start with no errors
     var has_quantity = false; //start with no quantity
 
     //use loop to validate all product quantities
@@ -54,26 +54,25 @@ app.post("/purchase", function(request, response, next) {
     }
     //if there are no quantities, send back to order page with message (need quantities)
     if (has_quantity == false) {
-        response.send('need to enter quantities');
-        //response.redirect('./receiptcopy.html?' + qstring);
+        errors['missing_quantities'] = 'Please enter a quantity!';
     }
 
     // create query string from request.body
     var qstring = qs.stringify(request.body);
 
-    //if there's no errors, create an invoice, otherwise send back to order page with error message
+    //if there's no errors, create a receipt
     if (Object.keys(errors).length == 0) {
-        response.redirect('./receiptcopy.html?' + qstring);
+        response.redirect('./receipt.html?' + qstring);
 
     } else {
+        //if there's errors
         //generate error message based on type of error
-        var error_string = '';
+        let error_string = {};
         for (err in errors) {
             error_string += errors[err];
         }
-        //send back to order page with error message (need valid quantities)
-        response.send(error_string)
-            //response.redirect('./order_form.html?' + qstring + error_string);
+        //send back to order page with error message
+        response.redirect('./order_form.html?' + qstring + `error_string=${err}`);
     }
 });
 
