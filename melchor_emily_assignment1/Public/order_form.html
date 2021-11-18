@@ -25,18 +25,11 @@
 
     <!--Add error message if there's any invalid quantities-->
     <script>
-        window.onload = function() {
-            //get query string
-            let params = (new URL(document.location)).searchParams;
-
-            /*if (params.has('undefined')) {
-                document.write(`<p style="color:#cc6600
-            ">Oops, no quantities were entered! Please enter the number of drinks you would like to order :)</p>`);
-            }*/
-
-            if (params.has('error_string')) {
-                alert(params.get(error_string));
-            }
+        //get query string
+        let params = (new URL(document.location)).searchParams;
+        //if there's an error, add error message
+        if (params.has(error_string)) {
+            alert(params.get(`error_string=${err}`));
         }
     </script>
 
