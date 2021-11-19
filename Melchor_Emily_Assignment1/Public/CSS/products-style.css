@@ -65,10 +65,6 @@ img {
     padding: 25px 50px 50px 50px;
 }
 
-img:hover {
-    opacity: 0.75;
-}
-
 
 /*Styling for top bar; from W3 Schools at https://www.w3schools.com/w3css/4/w3.css*/
 

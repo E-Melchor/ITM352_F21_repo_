@@ -7,7 +7,7 @@ var app = express();
 //querystring package
 var qs = require('querystring');
 
-//To access inputted data from order_form.html
+//To access inputted data from products_display.html
 app.use(express.urlencoded({ extended: true }));
 
 //products data
@@ -75,7 +75,7 @@ app.post("/purchase", function(request, response, next) {
 
     //if there's no errors, create a receipt
     if (Object.keys(errors).length == 0) {
-        response.redirect('./receipt.html?' + qstring);
+        response.redirect('./invoice.html?' + qstring);
     } else {
         //if there's errors
         //generate error message based on type of error
@@ -85,7 +85,7 @@ app.post("/purchase", function(request, response, next) {
             //for each error, add error message to overall error_string
         }
         //send back to order page with error message
-        response.redirect('./order_form.html?' + qstring + `&error_string=${error_string}`);
+        response.redirect('./products_display.html?' + qstring + `&error_string=${error_string}`);
         console.log(`error_string=${error_string}`);
     }
 });
