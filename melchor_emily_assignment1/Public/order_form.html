@@ -9,6 +9,17 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Jasmine Dragon</title>
+    <!--Add error message if there's any invalid quantities-->
+    <script>
+        window.onload = function() {
+            //get query string
+            let params = (new URL(document.location)).searchParams;
+            //if there's an error, add error message
+            if (params.has('error_string')) {
+                alert(params.get('error_string'));
+            }
+        }
+    </script>
 </head>
 
 <body>
@@ -22,16 +33,6 @@
     <!-- Page content -->
     <h2 style="font-family: Comforter Brush; font-size: 25pt; color: white; margin-top: 101px;">Best Boba Shop in Ba Sing Se!</h2>
     <p style="text-align: center;">To make your online order, enter the number of drinks you would like underneath the flavor. Click the Place Order button at the bottom of the page to submit your order and receive a receipt.</p><br>
-
-    <!--Add error message if there's any invalid quantities-->
-    <script>
-        //get query string
-        let params = (new URL(document.location)).searchParams;
-        //if there's an error, add error message
-        if (params.has('error_string')) {
-            alert(params.get('error_string'));
-        }
-    </script>
 
     <!-- Form code, modified from SmartPhoneProducts WODs -->
     <div>
