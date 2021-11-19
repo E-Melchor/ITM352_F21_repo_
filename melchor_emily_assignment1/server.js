@@ -49,7 +49,7 @@ app.post("/purchase", function(request, response, next) {
         }
         //if quantity is not a non-negative integer, add error (invalid quantity)
         else {
-            errors[`invalid_quantity${i}`] = `Please enter a valid quantity for ${products[i].flavor}`;
+            errors[`invalid_quantity${i}`] = `Please enter a valid quantity for ${products[i].flavor}! `;
         }
         //check if there is enough in inventory
         //access quantity_available from json file
@@ -62,7 +62,7 @@ app.post("/purchase", function(request, response, next) {
         }
         //if there's not enough in inventory, add error (quantity too large)
         else {
-            errors[`invalid_quantity${i}`] = `Please order a smaller amount of ${products[i].flavor}`;
+            errors[`invalid_quantity${i}`] = `Please order a smaller amount of ${products[i].flavor}! `;
         }
     }
     //if there are no quantities, send back to order page with message (need quantities)
@@ -85,7 +85,7 @@ app.post("/purchase", function(request, response, next) {
             //for each error, add error message to overall error_string
         }
         //send back to order page with error message
-        response.redirect('./order_form.html?' + qstring + `error_string=${error_string}`);
+        response.redirect('./order_form.html?' + qstring + `&error_string=${error_string}`);
         console.log(`error_string=${error_string}`);
     }
 });
