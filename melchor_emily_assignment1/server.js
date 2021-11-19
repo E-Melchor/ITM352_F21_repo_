@@ -51,6 +51,19 @@ app.post("/purchase", function(request, response, next) {
         else {
             errors[`invalid_quantity${i}`] = `Please enter a valid quantity for ${products[i].flavor}`;
         }
+        //check if there is enough in inventory
+        //access quantity_available from json file
+        let inventory = products[i].quantity_available;
+
+        //if quantity ordered is less than or same as the amount in inventory, reduce inventory by quantity ordered amount 
+        if (Number(quantity) <= inventory) {
+            products[i].quantity_available -= Number(quantity);
+            console.log(`${products[i].quantity_available} is new inventory amount`);
+        }
+        //if there's not enough in inventory, add error (quantity too large)
+        else {
+            errors[`invalid_quantity${i}`] = `Please order a smaller amount of ${products[i].flavor}`;
+        }
     }
     //if there are no quantities, send back to order page with message (need quantities)
     if (has_quantity == false) {
@@ -66,13 +79,14 @@ app.post("/purchase", function(request, response, next) {
     } else {
         //if there's errors
         //generate error message based on type of error
-        let error_string = {}; //start with empty error string
+        let error_string = ''; //start with empty error string
         for (err in errors) {
             error_string += errors[err];
             //for each error, add error message to overall error_string
         }
         //send back to order page with error message
         response.redirect('./order_form.html?' + qstring + `error_string=${error_string}`);
+        console.log(`error_string=${error_string}`);
     }
 });
 

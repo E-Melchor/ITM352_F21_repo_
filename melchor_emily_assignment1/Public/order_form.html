@@ -11,7 +11,7 @@
     <title>The Jasmine Dragon</title>
     <!--Add error message if there's any invalid quantities-->
     <script>
-        window.onload = function() {
+        window.onload = () => {
             //get query string
             let params = (new URL(document.location)).searchParams;
             //if there's an error, add error message
@@ -44,6 +44,7 @@
         <section class="item">
             <h2>${products[i].flavor}</h2>
             <p>$${products[i].price}</p>
+            <p>${products[i].quantity_available}</p>
             <center><input type ="text" placeholder="0" name= "quantity_textbox${i}" onkeyup="checkQuantity${this};"></center><br>
             <img src=./images/${products[i].image}>
         </section>
