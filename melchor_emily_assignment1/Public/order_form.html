@@ -28,8 +28,8 @@
         //get query string
         let params = (new URL(document.location)).searchParams;
         //if there's an error, add error message
-        if (params.has(error_string)) {
-            alert(params.get(`error_string=${err}`));
+        if (params.has('error_string')) {
+            alert(params.get('error_string'));
         }
     </script>
 

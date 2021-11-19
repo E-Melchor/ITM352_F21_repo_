@@ -63,16 +63,16 @@ app.post("/purchase", function(request, response, next) {
     //if there's no errors, create a receipt
     if (Object.keys(errors).length == 0) {
         response.redirect('./receipt.html?' + qstring);
-
     } else {
         //if there's errors
         //generate error message based on type of error
-        let error_string = {};
+        let error_string = {}; //start with empty error string
         for (err in errors) {
             error_string += errors[err];
+            //for each error, add error message to overall error_string
         }
         //send back to order page with error message
-        response.redirect('./order_form.html?' + qstring + `error_string=${err}`);
+        response.redirect('./order_form.html?' + qstring + `error_string=${error_string}`);
     }
 });
 
