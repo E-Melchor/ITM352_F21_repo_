@@ -4,16 +4,23 @@ const { join } = require('path');
 const { json } = require('express');
 var app = express();
 
-if (filename = './user_data.json') {
+var filename = './registration_data.json';
+
+if (fs.existsSync(filename)) {
     var stats = fs.statSync(filename);
-    //console.log(user_data_obj["kazman"]["password"]);
     console.log(filename + 'has' + stats["size"] + 'characters');
+
+    //have reg data file, so read data and parse into user_registration_info object
     let data_str = fs.readFileSync(filename, 'utf-8');
     var user_registration_info = JSON.parse(data_str);
     console.log(user_registration_info);
 } else {
-    console.log.lg(`Hey! ${filename} does not exist!`);
+    console.log(`Hey! ${filename} does not exist!`);
 }
+
+app.get("/", function(request, response) {
+    response.send('nothing here');
+});
 
 //data from form will be decoded
 app.use(express.urlencoded({ extended: true }));
