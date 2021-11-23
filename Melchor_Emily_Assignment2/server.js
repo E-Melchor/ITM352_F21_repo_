@@ -56,7 +56,7 @@ app.post("/purchase", function(request, response, next) {
         let inventory = products[i].quantity_available;
 
         //if quantity ordered is less than or same as the amount in inventory, reduce inventory by quantity ordered amount 
-        if (Number(quantity) <= inventory) {
+        if (Number(quantity) <= inventory && isNonNegInt(quantity)) {
             products[i].quantity_available -= Number(quantity);
             console.log(`${products[i].quantity_available} is new inventory amount`);
         }
