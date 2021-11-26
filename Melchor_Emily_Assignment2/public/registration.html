@@ -1,5 +1,6 @@
 <!--Author: Emily Melchor
-Description: shows login page for returning users; button redirects new users to registration-->
+Description: create a new user with HTML form
+-->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,24 +10,20 @@ Description: shows login page for returning users; button redirects new users to
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <!--Need to refer to script with user info JSON???-->
-    <script>
-        //add script to add error alert if there's an error
-    </script>
+    <title>New User Registration</title>
 </head>
 
 <body>
     <h1 style="font-size: 50pt;">The Jasmine Dragon</h1>
-    <h2>Please log in to complete your order!</h2>
+    <h2>Create your new account!</h2>
     <center>
-        <!--for action = whatever the app.post route will be on server-->
         <form action="" method="POST">
-            <input type="text" name="username" size="40" placeholder="Enter username"><br>
-            <input type="password" name="password" size="40" placeholder="Enter password"><br>
+            <input type="text" name="username" size="40" placeholder="Enter username"><br />
+            <input type="password" name="password" size="40" placeholder="Enter password"><br />
+            <input type="password" name="repeat_password" size="40" placeholder="Enter password again"><br />
+            <input type="email" name="email" size="40" placeholder="Enter email"><br />
             <input type="submit" value="Submit" id="submit">
         </form>
-        <p>Create a new account <a href="./registration.html" style="color: darkgreen;">here</a></p>
         <img src="./images/dragon_logo.png" height="100" width="auto" style="padding: 25px 25px 25px 25px;">
     </center>
 </body>

@@ -10,7 +10,7 @@ input[type=button] {
     background-color: white;
     color: darkgreen;
     border-radius: 10px;
-    padding: 20px 20px 20px 20px;
+    padding: 0;
 }
 
 img {
