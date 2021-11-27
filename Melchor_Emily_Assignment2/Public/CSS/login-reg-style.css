@@ -44,3 +44,8 @@ th,
 td {
     background-color: white;
 }
+
+p {
+    margin: 5px;
+    font-size: 12px;
+}

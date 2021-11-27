@@ -5,6 +5,7 @@ Description: create a new user with HTML form
 <html lang="en">
 
 <head>
+    <!--CSS stylesheets-->
     <link rel="stylesheet" href="./CSS/login-reg-style.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Comforter+Brush&family=Montagu+Slab:wght@300">
     <meta charset="UTF-8">
@@ -14,13 +15,17 @@ Description: create a new user with HTML form
 </head>
 
 <body>
+    <!--code: modified from ex4.js in Lab14-->
     <h1 style="font-size: 50pt;">The Jasmine Dragon</h1>
     <h2>Create your new account!</h2>
     <center>
-        <form action="" method="POST">
+        <form action="./register" method="POST">
             <input type="text" name="username" size="40" placeholder="Enter username"><br />
+            <p>Username must be between 4 and 10 characters; letters and numbers only</p>
+            <input type="text" name="name" size="40" placeholder="Enter name"><br /><br>
             <input type="password" name="password" size="40" placeholder="Enter password"><br />
-            <input type="password" name="repeat_password" size="40" placeholder="Enter password again"><br />
+            <p>Password must be at least 6 characters long</p>
+            <input type="password" name="repeat_password" size="40" placeholder="Reenter password"><br /><br>
             <input type="email" name="email" size="40" placeholder="Enter email"><br />
             <input type="submit" value="Submit" id="submit">
         </form>

@@ -4,14 +4,16 @@
 var express = require('express');
 var app = express();
 
-//querystring package
-var qs = require('querystring');
+//javascript modules
+var qs = require('querystring'); //querystring module (products display & invoice)
+const fs = require('fs'); //file system module (login & registration)
 
 //To access inputted data from products_display.html
 app.use(express.urlencoded({ extended: true }));
 
 //products data
 var products = require('./product_data.json');
+const e = require('express');
 app.get("/product_data.js", function(request, response) {
     response.type('.js');
     var products_str = `var products = ${JSON.stringify(products)};`;
@@ -102,6 +104,99 @@ function isNonNegInt(q, returnErrors = false) {
     }
     return returnErrors ? errors : (errors.length == 0);
 };
+
+//registration form data
+var filename = './user_data.json';
+//have reg data file, so read data and parse into user_registration_info object
+let data = fs.readFileSync(filename, 'utf-8');
+var user_reg_info = JSON.parse(data);
+
+
+app.post("/register", function(request, response) {
+    //define new username, password, repeat password, and email
+    //.toLowerCase makes case insensitive
+    let new_username = request.body.username.toLowerCase();
+    let new_name = request.body['name'];
+    let new_password = request.body['password'];
+    let confirm_password = request.body['repeat_password'];
+    let new_email = request.body.email.toLowerCase();
+
+    var reg_errors = []; //start with no errors
+
+    //validate username value
+    //Username length must be minimum 4 characters and maximum 10 characters
+    if (new_username.length < 4 && new_username.length > 0) {
+        reg_errors[`short_username`] = `Username length is too short`;
+    } else if (new_username.length > 10) {
+        reg_errors[`long_username`] = `Username length is too long`;
+    } else if (new_username.length == 0) {
+        reg_errors[`no_username`] = `Please enter a username`;
+    } else {
+        //Username cannot have symbols (only letters and numbers)
+        //.match from https://stackoverflow.com/questions/3853543/checking-input-values-for-special-symbols
+        if (new_username.match(/^[a-zA-Z0-9_]+$/)) {
+            //Check if username is already taken (need HELPPPP)
+            if (typeof user_reg_info[new_username] != 'undefined') {
+                response.send('username already taken');
+            } else {
+                console.log(`username is ${new_username}`)
+            }
+        } else {
+            reg_errors[`username_symbols`] = `Username cannot have symbols`;
+        }
+    }
+
+    //validate name value
+    //name cannot be more than 30 characters
+    if (new_name.length > 30) {
+        reg_errors[`long_name`] = `Name cannot be more than 30 characters`;
+    } else {
+        if (new_name.match(/^[a-zA-Z_]+$/)) {
+            console.log(`name is ${new_name}`);
+        } else {
+            reg_errors[`name_nonletters`] = `Name can only consist of letters`;
+        }
+    }
+
+
+    //validate password value
+    //password must be at least 6 characters minimum
+    if (new_password.length < 6) {
+        reg_errors[`short_password`] = `Password is too short`;
+    } else {
+        console.log('password is good');
+    }
+    //confirm password
+    if (new_password == confirm_password) {
+        console.log('passwords match');
+    } else {
+        reg_errors[`passwords_no_match`] = `Passwords do not match, please try again`;
+    }
+
+    //validate email value
+    //.match from https://www.w3resource.com/javascript/form/email-validation.php
+    if (new_email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
+        console.log(`email is ${new_email}`);
+    } else {
+        reg_errors[`invalid_email`] = `Email is invalid`;
+    }
+
+
+    //generate registration error message
+    let reg_error_string = '';
+    for (err in reg_errors) {
+        reg_error_string += reg_errors[err];
+    }
+    response.send(reg_error_string);
+
+    //if there are no errors, enter form values to JSON file
+
+
+    //response.send(`new user ${new_username} with password as ${new_password}; repeat password ${confirm_password} and email is ${new_email}`);
+    //console.log(user_registration_info);
+
+});
+
 
 // route all other GET requests to files in public 
 app.use(express.static('./public'));
