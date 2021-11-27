@@ -12,6 +12,17 @@ Description: create a new user with HTML form
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>New User Registration</title>
+    <!--Add error message if there's any invalid quantities-->
+    <script>
+        window.onload = () => {
+            //get query string
+            let params = (new URL(document.location)).searchParams;
+            //if there's an error, add error message
+            if (params.has('reg_error_string')) {
+                alert(params.get('reg_error_string'));
+            }
+        }
+    </script>
 </head>
 
 <body>

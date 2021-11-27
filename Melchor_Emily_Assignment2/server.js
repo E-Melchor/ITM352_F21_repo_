@@ -126,11 +126,11 @@ app.post("/register", function(request, response) {
     //validate username value
     //Username length must be minimum 4 characters and maximum 10 characters
     if (new_username.length < 4 && new_username.length > 0) {
-        reg_errors[`short_username`] = `Username length is too short`;
+        reg_errors[`short_username`] = `Username length is too short. `;
     } else if (new_username.length > 10) {
-        reg_errors[`long_username`] = `Username length is too long`;
+        reg_errors[`long_username`] = `Username length is too long. `;
     } else if (new_username.length == 0) {
-        reg_errors[`no_username`] = `Please enter a username`;
+        reg_errors[`no_username`] = `Please enter a username. `;
     } else {
         //Username cannot have symbols (only letters and numbers)
         //.match from https://stackoverflow.com/questions/3853543/checking-input-values-for-special-symbols
@@ -142,52 +142,72 @@ app.post("/register", function(request, response) {
                 console.log(`username is ${new_username}`)
             }
         } else {
-            reg_errors[`username_symbols`] = `Username cannot have symbols`;
+            reg_errors[`username_symbols`] = `Username cannot have symbols. `;
         }
     }
 
     //validate name value
     //name cannot be more than 30 characters
-    if (new_name.length > 30) {
-        reg_errors[`long_name`] = `Name cannot be more than 30 characters`;
+    if (new_name.length == 0) {
+        reg_errors[`no_name`] = `Please enter your name. `;
+    } else if (new_name.length > 30) {
+        reg_errors[`long_name`] = `Name cannot be more than 30 characters. `;
     } else {
         if (new_name.match(/^[a-zA-Z_]+$/)) {
             console.log(`name is ${new_name}`);
         } else {
-            reg_errors[`name_nonletters`] = `Name can only consist of letters`;
+            reg_errors[`name_nonletters`] = `Name can only consist of letters. `;
         }
     }
 
-
     //validate password value
     //password must be at least 6 characters minimum
-    if (new_password.length < 6) {
+    if (new_password.length == 0) {
+        reg_errors[`no_password`] = `Please enter a password. `;
+    } else if (new_password.length < 6) {
         reg_errors[`short_password`] = `Password is too short`;
     } else {
         console.log('password is good');
     }
+
     //confirm password
-    if (new_password == confirm_password) {
+    if (confirm_password.length == 0) {
+        reg_errors[`no_password_reenter`] = `Please reenter your password. `;
+
+    } else if (new_password == confirm_password) {
         console.log('passwords match');
     } else {
-        reg_errors[`passwords_no_match`] = `Passwords do not match, please try again`;
+        reg_errors[`passwords_no_match`] = `Passwords do not match, please try again. `;
     }
 
     //validate email value
+    if (new_email.length == 0) {
+        reg_errors[`no_email`] = `Please enter your email. `;
+    }
     //.match from https://www.w3resource.com/javascript/form/email-validation.php
-    if (new_email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
+    else if (new_email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
         console.log(`email is ${new_email}`);
     } else {
-        reg_errors[`invalid_email`] = `Email is invalid`;
+        reg_errors[`invalid_email`] = `Email is invalid. `;
     }
 
+    // create query string from request.body
+    var qstring = qs.stringify(request.body);
 
-    //generate registration error message
-    let reg_error_string = '';
-    for (err in reg_errors) {
-        reg_error_string += reg_errors[err];
+    //if there's no errors, create a receipt??? or redirect to login page???
+    if (Object.keys(reg_errors).length == 0) {
+        response.send('no errors');
+    } else {
+        //generate registration error message
+        let reg_error_string = '';
+        for (err in reg_errors) {
+            reg_error_string += reg_errors[err];
+        }
+        //response.send(reg_error_string);
+        response.redirect('./registration.html?' + qstring + `&reg_error_string=${reg_error_string} `);
+        console.log(`reg_error_string=${reg_error_string} `);
     }
-    response.send(reg_error_string);
+
 
     //if there are no errors, enter form values to JSON file
 
