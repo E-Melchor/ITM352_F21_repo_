@@ -78,7 +78,9 @@ app.post("/purchase", function(request, response, next) {
 
     //if there's no errors, send to login page
     if (Object.keys(errors).length == 0) {
-        response.redirect('./login_page.html?' + qstring);
+        //response.redirect('./login_page.html?' + qstring);
+        let params = new URLSearchParams(request.body);
+        response.redirect('./login_page.html?' + params.toString());
     } else {
         //if there's errors
         //generate error message based on type of error
@@ -228,13 +230,14 @@ app.post("/login", function(request, response) {
     // Redirect to logged in page if ok, back to login page if not
     let login_username = request.body['username'].toLowerCase();
     let login_password = request.body['password'];
+    let params = new URLSearchParams(request.query);
 
     var log_errors = []; //start with no errors
 
     //check if username exists, then check password entered matched password stored
     if (typeof user_reg_info[login_username] != 'undefined') {
         if (user_reg_info[login_username].password == login_password) {
-            response.send(`${login_username} is logged in`);
+            console.log('no log in errors');
         } else {
             log_errors['incorrect_password'] = `Incorrect password for ${login_username}. Please try again.`;
         }
@@ -243,7 +246,8 @@ app.post("/login", function(request, response) {
         //response.redirect(`./login?err=${login_username} does not exist`);
     }
     if (Object.keys(log_errors).length == 0) {
-        response.send('no errors');
+        console.log(`params.toString() is ` + params.toString());
+        response.redirect('./invoice.html?' + params.toString());
     } else {
         //generate registration error message
         let log_error_string = '';
