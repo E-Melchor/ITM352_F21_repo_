@@ -8,9 +8,10 @@ var app = express();
 var qs = require('querystring'); //querystring module (products display & invoice)
 const fs = require('fs'); //file system module (login & registration)
 
-//To access inputted data from products_display.html
+//To access inputted data
 app.use(express.urlencoded({ extended: true }));
 
+//products display page
 //products data
 var products = require('./product_data.json');
 const e = require('express');
@@ -75,9 +76,9 @@ app.post("/purchase", function(request, response, next) {
     // create query string from request.body
     var qstring = qs.stringify(request.body);
 
-    //if there's no errors, create a receipt
+    //if there's no errors, send to login page
     if (Object.keys(errors).length == 0) {
-        response.redirect('./invoice.html?' + qstring);
+        response.redirect('./login_page.html?' + qstring);
     } else {
         //if there's errors
         //generate error message based on type of error
@@ -105,11 +106,13 @@ function isNonNegInt(q, returnErrors = false) {
     return returnErrors ? errors : (errors.length == 0);
 };
 
-//registration form data
+
+//registration form
 var filename = './user_data.json';
-//have reg data file, so read data and parse into user_registration_info object
-let data = fs.readFileSync(filename, 'utf-8');
-var user_reg_info = JSON.parse(data);
+//have reg data file, so read data and parse into user_reg_info object
+let data_str = fs.readFileSync(filename, 'utf-8');
+var user_reg_info = JSON.parse(data_str);
+console.log(user_reg_info);
 
 
 app.post("/register", function(request, response) {
@@ -126,11 +129,11 @@ app.post("/register", function(request, response) {
     //validate username value
     //Username length must be minimum 4 characters and maximum 10 characters
     if (new_username.length < 4 && new_username.length > 0) {
-        reg_errors[`short_username`] = `Username length is too short. `;
+        reg_errors[`short_username`] = `username length is too short. `;
     } else if (new_username.length > 10) {
-        reg_errors[`long_username`] = `Username length is too long. `;
+        reg_errors[`long_username`] = `username length is too long. `;
     } else if (new_username.length == 0) {
-        reg_errors[`no_username`] = `Please enter a username. `;
+        reg_errors[`no_username`] = `enter a username. `;
     } else {
         //Username cannot have symbols (only letters and numbers)
         //.match from https://stackoverflow.com/questions/3853543/checking-input-values-for-special-symbols
@@ -149,7 +152,7 @@ app.post("/register", function(request, response) {
     //validate name value
     //name cannot be more than 30 characters
     if (new_name.length == 0) {
-        reg_errors[`no_name`] = `Please enter your name. `;
+        reg_errors[`no_name`] = `enter your name. `;
     } else if (new_name.length > 30) {
         reg_errors[`long_name`] = `Name cannot be more than 30 characters. `;
     } else {
@@ -163,32 +166,32 @@ app.post("/register", function(request, response) {
     //validate password value
     //password must be at least 6 characters minimum
     if (new_password.length == 0) {
-        reg_errors[`no_password`] = `Please enter a password. `;
+        reg_errors[`no_password`] = `enter a password. `;
     } else if (new_password.length < 6) {
-        reg_errors[`short_password`] = `Password is too short`;
+        reg_errors[`short_password`] = `password is too short. `;
     } else {
         console.log('password is good');
     }
 
     //confirm password
     if (confirm_password.length == 0) {
-        reg_errors[`no_password_reenter`] = `Please reenter your password. `;
+        reg_errors[`no_password_reenter`] = `reenter your password. `;
 
     } else if (new_password == confirm_password) {
         console.log('passwords match');
     } else {
-        reg_errors[`passwords_no_match`] = `Passwords do not match, please try again. `;
+        reg_errors[`passwords_no_match`] = `passwords do not match, please try again. `;
     }
 
     //validate email value
     if (new_email.length == 0) {
-        reg_errors[`no_email`] = `Please enter your email. `;
+        reg_errors[`no_email`] = `enter your email. `;
     }
     //.match from https://www.w3resource.com/javascript/form/email-validation.php
     else if (new_email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
         console.log(`email is ${new_email}`);
     } else {
-        reg_errors[`invalid_email`] = `Email is invalid. `;
+        reg_errors[`invalid_email`] = `email is invalid. `;
     }
 
     // create query string from request.body
@@ -213,7 +216,44 @@ app.post("/register", function(request, response) {
 
 
     //response.send(`new user ${new_username} with password as ${new_password}; repeat password ${confirm_password} and email is ${new_email}`);
-    //console.log(user_registration_info);
+    //console.log(user_reg_info);
+
+});
+
+
+//login page
+//Process login form; modified from ex4.js in Lab14
+
+app.post("/login", function(request, response) {
+    // Redirect to logged in page if ok, back to login page if not
+    let login_username = request.body['username'].toLowerCase();
+    let login_password = request.body['password'];
+
+    var log_errors = []; //start with no errors
+
+    //check if username exists, then check password entered matched password stored
+    if (typeof user_reg_info[login_username] != 'undefined') {
+        if (user_reg_info[login_username].password == login_password) {
+            response.send(`${login_username} is logged in`);
+        } else {
+            log_errors['incorrect_password'] = `Incorrect password for ${login_username}. Please try again.`;
+        }
+    } else {
+        log_errors['incorrect_username'] = `Username ${login_username} is incorrect. Please try again.`;
+        //response.redirect(`./login?err=${login_username} does not exist`);
+    }
+    if (Object.keys(log_errors).length == 0) {
+        response.send('no errors');
+    } else {
+        //generate registration error message
+        let log_error_string = '';
+        for (err in log_errors) {
+            log_error_string += log_errors[err];
+        }
+        //response.send(reg_error_string);
+        response.redirect('./login_page.html?' + `&log_error_string=${log_error_string} `);
+        console.log(`log_error_string=${log_error_string} `);
+    }
 
 });
 

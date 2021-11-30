@@ -13,22 +13,22 @@ Description: create a new user with HTML form
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>New User Registration</title>
     <!--Add error message if there's any invalid quantities-->
-    <script>
-        window.onload = () => {
-            //get query string
-            let params = (new URL(document.location)).searchParams;
-            //if there's an error, add error message
-            if (params.has('reg_error_string')) {
-                alert(params.get('reg_error_string'));
-            }
-        }
-    </script>
 </head>
 
 <body>
     <!--code: modified from ex4.js in Lab14-->
     <h1 style="font-size: 50pt;">The Jasmine Dragon</h1>
     <h2>Create your new account!</h2>
+    <script>
+        window.onload = () => {
+            //get query string
+            let params = (new URL(document.location)).searchParams;
+            //if there's an error, add error message
+            if (params.has('reg_error_string')) {
+                alert('Please fix the following errors: ' + params.get('reg_error_string'));
+            }
+        }
+    </script>
     <center>
         <form action="./register" method="POST">
             <input type="text" name="username" size="40" placeholder="Enter username"><br />
@@ -37,9 +37,10 @@ Description: create a new user with HTML form
             <input type="password" name="password" size="40" placeholder="Enter password"><br />
             <p>Password must be at least 6 characters long</p>
             <input type="password" name="repeat_password" size="40" placeholder="Reenter password"><br /><br>
-            <input type="email" name="email" size="40" placeholder="Enter email"><br />
+            <input type="email" name="email" size="40" placeholder="Enter email"><br /><br>
             <input type="submit" value="Submit" id="submit">
-        </form>
+        </form> <br>
+        <p>Already have an account? Login <a href="./login_page.html" style="color: darkgreen;">here</a></p>
         <img src="./images/dragon_logo.png" height="100" width="auto" style="padding: 25px 25px 25px 25px;">
     </center>
 </body>

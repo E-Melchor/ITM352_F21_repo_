@@ -1,7 +1,12 @@
-[{
+{
     "itm352": {
         "name": "ITM 352",
         "password": "grader",
         "email": "itm352@hawaii.edu"
+    },
+    "test_user": {
+        "name": "Tester",
+        "password": "potato",
+        "email": "test@hawaii.edu"
     }
-}]
+}
