@@ -1,3 +1,7 @@
+/*
+Emily Melchor
+Assignment2 Server
+*/
 //server code: modified from info_server_Ex5.js in Lab13
 
 //create server framework with express
