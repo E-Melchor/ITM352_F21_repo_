@@ -26,6 +26,12 @@ Description: generate invoice based on what the user inputs on products_display 
         }
     }
 </script>
+<script>
+    let params = (new URL(document.location)).searchParams;
+    if (params.has('username')) {
+        var username = params.get('username');
+    }
+</script>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -41,6 +47,9 @@ Description: generate invoice based on what the user inputs on products_display 
 <body>
     <h1>The Jasmine Dragon</h1><br>
     <h2>Thank you for your order!</h2>
+    <script>
+        document.write(`<h2>Thank you ${username} for your order!</h2>`);
+    </script>
     <table border="2" class="center">
         <tbody>
             <tr>
