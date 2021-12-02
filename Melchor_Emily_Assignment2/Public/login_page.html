@@ -20,6 +20,10 @@ Description: shows login page for returning users; button redirects new users to
             if (params.has('log_error_string')) {
                 alert(params.get('log_error_string'));
             }
+            //make username sticky
+            if (params.has('username')) {
+                username.value = params.get('username');
+            }
         }
     </script>
 </head>
