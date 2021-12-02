@@ -21,6 +21,9 @@ app.all('*', function(request, response, next) {
     next();
 });
 
+//start with user logged out
+var user_logged_in = false;
+
 //--------------------products display page--------------------
 //products data
 var products = require('./product_data.json');
@@ -87,7 +90,11 @@ app.post("/purchase", function(request, response, next) {
         //response.redirect('./login_page.html?' + qstring);
         purchase_form_data = request.body;
         console.log(purchase_form_data);
-        response.redirect('./login_page.html?');
+        if (user_logged_in == true) {
+            response.redirect('./invoice.html')
+        } else {
+            response.redirect('./login_page.html?');
+        }
     } else {
         //if there's errors
         //generate error message based on type of error
@@ -133,51 +140,51 @@ console.log(user_reg_info);
 app.post("/register", function(request, response) {
     //define new username, password, repeat password, and email
     //.toLowerCase makes case insensitive
-    var new_username = request.body.username.toLowerCase();
-    var new_name = request.body['name'];
-    var new_password = request.body['password'];
+    var username = request.body.username.toLowerCase();
+    var name = request.body['name'];
+    var password = request.body['password'];
     var confirm_password = request.body['repeat_password'];
-    var new_email = request.body.email.toLowerCase();
+    var email = request.body.email.toLowerCase();
 
     var reg_errors = {}; //start with no errors
 
     //validate username value
     //Username length must be minimum 4 characters and maximum 10 characters
-    if (new_username.length < 4 || new_username.length > 10) {
+    if (username.length < 4 || username.length > 10) {
         reg_errors[`username`] = `Username must be between 4 and 10 characters.`;
-    } else if (new_username.length == 0) {
+    } else if (username.length == 0) {
         reg_errors[`username`] = `Enter a username. `;
     }
 
     //Username cannot have symbols (only letters and numbers)
     //.match from https://stackoverflow.com/questions/3853543/checking-input-values-for-special-symbols
-    if (new_username.match(/^[a-zA-Z0-9_]+$/) == false) {
+    if (username.match(/^[a-zA-Z0-9_]+$/) == false) {
         reg_errors[`username`] = `Username can only consist of letters and numbers. `;
     }
 
     //Username is already taken
-    if (typeof user_reg_info[new_username] != 'undefined') {
+    if (typeof user_reg_info[username] != 'undefined') {
         reg_errors[`username`] = `Username is already taken. `;
     }
 
     //validate name value
     //name cannot be more than 30 characters
-    if (new_name.length == 0) {
+    if (name.length == 0) {
         reg_errors[`name`] = `Enter your full name. `;
-    } else if (new_name.length > 30) {
+    } else if (name.length > 30) {
         reg_errors[`name`] = `Name cannot be more than 30 characters. `;
     }
 
     //name can only have letters
-    if (new_name.match(/^[a-zA-Z_]+$/) == false) {
+    if (name.match(/^[a-zA-Z_]+$/) == false) {
         reg_errors[`name`] = `Name can only consist of letters. `;
     }
 
     //validate password value
     //password must be at least 6 characters minimum
-    if (new_password.length == 0) {
+    if (password.length == 0) {
         reg_errors[`password`] = `Enter a password. `;
-    } else if (new_password.length < 6) {
+    } else if (password.length < 6) {
         reg_errors[`password`] = `Password is too short. `;
     }
 
@@ -185,35 +192,34 @@ app.post("/register", function(request, response) {
     if (confirm_password.length == 0) {
         reg_errors[`passwordReenter`] = `Reenter your password. `;
 
-    } else if (new_password == confirm_password) {
+    } else if (password == confirm_password) {
         console.log('passwords match');
     } else {
         reg_errors[`passwordReenter`] = `Passwords do not match, please try again. `;
     }
 
     //validate email value
-    if (new_email.length == 0) {
+    if (email.length == 0) {
         reg_errors[`email`] = `Enter your email. `;
     }
     //.match from https://www.w3resource.com/javascript/form/email-validation.php
-    else if (new_email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
-        console.log(`email is ${new_email}`);
+    else if (email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
+        console.log(`email is ${email}`);
     } else {
         reg_errors[`email`] = `Email is invalid. `;
     }
 
     //if there's no errors, create a receipt??? or redirect to login page???
     if (Object.keys(reg_errors).length == 0) {
-        response.send('no errors');
+        user_reg_info
+        user_reg_info[username] = {};
+        user_reg_info[username].name = request.body.name;
+        user_reg_info[username].password = request.body.password;
+        user_reg_info[username].email = request.body.email;
+        fs.writeFileSync(filename, JSON.stringify(user_reg_info));
+        user_logged_in == true;
+        response.redirect(`./invoice.html?`);
     } else {
-        /*//generate registration error message
-        let reg_error_string = '';
-        for (err in reg_errors) {
-            reg_error_string += reg_errors[err];
-        }
-        //response.send(reg_error_string);
-        response.redirect('./registration.html?' + qstring + `&reg_error_string=${reg_error_string} `);
-        console.log(`reg_error_string=${reg_error_string} `);*/
         let errs_obj = { "reg_errors": JSON.stringify(reg_errors) };
         let params = new URLSearchParams(errs_obj);
         params.append('reg_data', JSON.stringify(request.body)); //put reg data into params
@@ -225,7 +231,7 @@ app.post("/register", function(request, response) {
     //if there are no errors, enter form values to JSON file
 
 
-    //response.send(`new user ${new_username} with password as ${new_password}; repeat password ${confirm_password} and email is ${new_email}`);
+    //response.send(`new user ${username} with password as ${password}; repeat password ${confirm_password} and email is ${email}`);
     //console.log(user_reg_info);
 
 });
@@ -256,6 +262,7 @@ app.post("/login", function(request, response) {
         //response.redirect(`./login?err=${username} does not exist`);
     }
     if (Object.keys(log_errors).length == 0) {
+        user_logged_in == true;
         response.redirect('./invoice.html?');
     } else {
         //generate registration error message
