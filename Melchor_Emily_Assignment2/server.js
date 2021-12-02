@@ -15,24 +15,26 @@ const fs = require('fs'); //file system module (login & registration)
 //To access inputted data
 app.use(express.urlencoded({ extended: true }));
 
-//products display page
-//products data
-var products = require('./product_data.json');
-const e = require('express');
-app.get("/product_data.js", function(request, response) {
-    response.type('.js');
-    var products_str = `var products = ${JSON.stringify(products)};`;
-    response.send(products_str);
-});
-
 // monitor all requests; from info_server_Ex5.js in Lab13
 app.all('*', function(request, response, next) {
     console.log(request.method + ' to ' + request.path);
     next();
 });
 
+//--------------------products display page--------------------
+//products data
+var products = require('./product_data.json');
+app.get("/product_data.js", function(request, response) {
+    response.type('.js');
+    var products_str = `var products = ${JSON.stringify(products)};`;
+    response.send(products_str);
+});
+
 // process purchase request (validate quantities, check quantity available)
 products.forEach((prod, i) => { prod.total_sold = 0 });
+
+//variable for purchase data; use for transient data
+var purchase_form_data;
 
 //route to validate quantities on server
 app.post("/purchase", function(request, response, next) {
@@ -83,8 +85,9 @@ app.post("/purchase", function(request, response, next) {
     //if there's no errors, send to login page
     if (Object.keys(errors).length == 0) {
         //response.redirect('./login_page.html?' + qstring);
-        let params = new URLSearchParams(request.body);
-        response.redirect('./login_page.html?' + params.toString());
+        purchase_form_data = request.body;
+        console.log(purchase_form_data);
+        response.redirect('./login_page.html?');
     } else {
         //if there's errors
         //generate error message based on type of error
@@ -112,109 +115,110 @@ function isNonNegInt(q, returnErrors = false) {
     return returnErrors ? errors : (errors.length == 0);
 };
 
+//route for purchase form data
+app.get("/purchase_form_data.js", function(request, response) {
+    response.type('.js');
+    var purchase_str = `var purchase_form_data = ${JSON.stringify(purchase_form_data)};`;
+    console.log(purchase_str);
+    response.send(purchase_str);
+})
 
-//registration form
+//--------------------registration form--------------------
 var filename = './user_data.json';
 //have reg data file, so read data and parse into user_reg_info object
 let data_str = fs.readFileSync(filename, 'utf-8');
 var user_reg_info = JSON.parse(data_str);
 console.log(user_reg_info);
 
-
 app.post("/register", function(request, response) {
     //define new username, password, repeat password, and email
     //.toLowerCase makes case insensitive
-    let new_username = request.body.username.toLowerCase();
-    let new_name = request.body['name'];
-    let new_password = request.body['password'];
-    let confirm_password = request.body['repeat_password'];
-    let new_email = request.body.email.toLowerCase();
+    var new_username = request.body.username.toLowerCase();
+    var new_name = request.body['name'];
+    var new_password = request.body['password'];
+    var confirm_password = request.body['repeat_password'];
+    var new_email = request.body.email.toLowerCase();
 
-    var reg_errors = []; //start with no errors
+    var reg_errors = {}; //start with no errors
 
     //validate username value
     //Username length must be minimum 4 characters and maximum 10 characters
-    if (new_username.length < 4 && new_username.length > 0) {
-        reg_errors[`short_username`] = `username length is too short. `;
-    } else if (new_username.length > 10) {
-        reg_errors[`long_username`] = `username length is too long. `;
+    if (new_username.length < 4 || new_username.length > 10) {
+        reg_errors[`username`] = `Username must be between 4 and 10 characters.`;
     } else if (new_username.length == 0) {
-        reg_errors[`no_username`] = `enter a username. `;
-    } else {
-        //Username cannot have symbols (only letters and numbers)
-        //.match from https://stackoverflow.com/questions/3853543/checking-input-values-for-special-symbols
-        if (new_username.match(/^[a-zA-Z0-9_]+$/)) {
-            //Check if username is already taken (need HELPPPP)
-            if (typeof user_reg_info[new_username] != 'undefined') {
-                response.send('username already taken');
-            } else {
-                console.log(`username is ${new_username}`)
-            }
-        } else {
-            reg_errors[`username_symbols`] = `Username cannot have symbols. `;
-        }
+        reg_errors[`username`] = `Enter a username. `;
+    }
+
+    //Username cannot have symbols (only letters and numbers)
+    //.match from https://stackoverflow.com/questions/3853543/checking-input-values-for-special-symbols
+    if (new_username.match(/^[a-zA-Z0-9_]+$/) == false) {
+        reg_errors[`username`] = `Username can only consist of letters and numbers. `;
+    }
+
+    //Username is already taken
+    if (typeof user_reg_info[new_username] != 'undefined') {
+        reg_errors[`username`] = `Username is already taken. `;
     }
 
     //validate name value
     //name cannot be more than 30 characters
     if (new_name.length == 0) {
-        reg_errors[`no_name`] = `enter your name. `;
+        reg_errors[`name`] = `Enter your full name. `;
     } else if (new_name.length > 30) {
-        reg_errors[`long_name`] = `Name cannot be more than 30 characters. `;
-    } else {
-        if (new_name.match(/^[a-zA-Z_]+$/)) {
-            console.log(`name is ${new_name}`);
-        } else {
-            reg_errors[`name_nonletters`] = `Name can only consist of letters. `;
-        }
+        reg_errors[`name`] = `Name cannot be more than 30 characters. `;
+    }
+
+    //name can only have letters
+    if (new_name.match(/^[a-zA-Z_]+$/) == false) {
+        reg_errors[`name`] = `Name can only consist of letters. `;
     }
 
     //validate password value
     //password must be at least 6 characters minimum
     if (new_password.length == 0) {
-        reg_errors[`no_password`] = `enter a password. `;
+        reg_errors[`password`] = `Enter a password. `;
     } else if (new_password.length < 6) {
-        reg_errors[`short_password`] = `password is too short. `;
-    } else {
-        console.log('password is good');
+        reg_errors[`password`] = `Password is too short. `;
     }
 
     //confirm password
     if (confirm_password.length == 0) {
-        reg_errors[`no_password_reenter`] = `reenter your password. `;
+        reg_errors[`passwordReenter`] = `Reenter your password. `;
 
     } else if (new_password == confirm_password) {
         console.log('passwords match');
     } else {
-        reg_errors[`passwords_no_match`] = `passwords do not match, please try again. `;
+        reg_errors[`passwordReenter`] = `Passwords do not match, please try again. `;
     }
 
     //validate email value
     if (new_email.length == 0) {
-        reg_errors[`no_email`] = `enter your email. `;
+        reg_errors[`email`] = `Enter your email. `;
     }
     //.match from https://www.w3resource.com/javascript/form/email-validation.php
     else if (new_email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
         console.log(`email is ${new_email}`);
     } else {
-        reg_errors[`invalid_email`] = `email is invalid. `;
+        reg_errors[`email`] = `Email is invalid. `;
     }
-
-    // create query string from request.body
-    var qstring = qs.stringify(request.body);
 
     //if there's no errors, create a receipt??? or redirect to login page???
     if (Object.keys(reg_errors).length == 0) {
         response.send('no errors');
     } else {
-        //generate registration error message
+        /*//generate registration error message
         let reg_error_string = '';
         for (err in reg_errors) {
             reg_error_string += reg_errors[err];
         }
         //response.send(reg_error_string);
         response.redirect('./registration.html?' + qstring + `&reg_error_string=${reg_error_string} `);
-        console.log(`reg_error_string=${reg_error_string} `);
+        console.log(`reg_error_string=${reg_error_string} `);*/
+        let errs_obj = { "reg_errors": JSON.stringify(reg_errors) };
+        let params = new URLSearchParams(errs_obj);
+        params.append('reg_data', JSON.stringify(request.body)); //put reg data into params
+        params.append('username', request.body.username); //put username into params
+        response.redirect(`./registration.html?` + params.toString());
     }
 
 
@@ -227,31 +231,32 @@ app.post("/register", function(request, response) {
 });
 
 
-//login page
+//--------------------login page--------------------
 //Process login form; modified from ex4.js in Lab14
 
 app.post("/login", function(request, response) {
     // Redirect to logged in page if ok, back to login page if not
-    let login_username = request.body['username'].toLowerCase();
+    let username = request.body['username'].toLowerCase();
     let login_password = request.body['password'];
     let params = new URLSearchParams(request.query);
 
     var log_errors = []; //start with no errors
 
     //check if username exists, then check password entered matched password stored
-    if (typeof user_reg_info[login_username] != 'undefined') {
-        if (user_reg_info[login_username].password == login_password) {
+    if (typeof user_reg_info[username] != 'undefined') {
+        if (user_reg_info[username].password == login_password) {
             console.log('no log in errors');
+
+
         } else {
-            log_errors['incorrect_password'] = `Incorrect password for ${login_username}. Please try again.`;
+            log_errors['incorrect_password'] = `Incorrect password for ${username}. Please try again.`;
         }
     } else {
-        log_errors['incorrect_username'] = `Username ${login_username} is incorrect. Please try again.`;
-        //response.redirect(`./login?err=${login_username} does not exist`);
+        log_errors['incorrect_username'] = `Username ${username} is incorrect. Please try again.`;
+        //response.redirect(`./login?err=${username} does not exist`);
     }
     if (Object.keys(log_errors).length == 0) {
-        console.log(`params.toString() is ` + params.toString());
-        response.redirect('./invoice.html?' + params.toString());
+        response.redirect('./invoice.html?');
     } else {
         //generate registration error message
         let log_error_string = '';

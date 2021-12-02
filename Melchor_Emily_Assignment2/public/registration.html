@@ -37,7 +37,7 @@ Description: create a new user with HTML form
                  document.getElementById(id).value = reg_data[id];
              }
          }*/
-        if (params.has('reg_errors')) {
+        /* if (params.has('reg_errors')) {
             var errors = JSON.parse(params.get('reg_errors'));
             console.log("invalid");
             // make register form sticky
@@ -47,7 +47,16 @@ Description: create a new user with HTML form
                     document.getElementById(register_form[i].name + '_error').innerHTML = errors[register_form[i].name];
                 }
             }
-            alert('Please fix the following errors!');
+        }*/
+        if (params.has('reg_errors')) {
+            var errors = JSON.parse(params.get('reg_errors'));
+
+            for (i = 0; i < register_form.elements.length; i++) {
+                register_form[i].value = params.get(register_form[i].name);
+                if (typeof errors[register_form[i].name] != 'undefined') {
+                    document.getElementById(register_form[i].name + '_error').innerHTML = errors[register_form[i].name];
+                }
+            }
         }
     }
 </script>
@@ -59,21 +68,29 @@ Description: create a new user with HTML form
     <center>
         <form name="register_form" action="./register" method="POST">
             <label id="username_label" for="username"><b>Username</b></label>
-            <input type="text" name="username" size="40" placeholder="Enter username"><br />
-            <p>Username must be between 4 and 10 characters; letters and numbers only</p><br>
+            <input type="text" name="username" size="40" placeholder="Enter username">
+            <div id='username_error' style="color: darkgreen;"></div>
+            <br>
 
             <label id="name_label"><b>Full Name</b></label>
-            <input type="text" name="name" size="40" placeholder="Enter full name"><br /><br>
+            <input type="text" name="name" size="40" placeholder="Enter full name">
+            <div id='name_error' style="color: darkgreen;"></div>
+            <br>
 
             <label id="password_label" for="password"><b>Password</b></label>
-            <input type="password" name="password" size="40" placeholder="Enter password"><br />
-            <p>Password must be at least 6 characters long</p><br>
+            <input type="password" name="password" size="40" placeholder="Enter password">
+            <div id='password_error' style="color: darkgreen;"></div>
+            <br>
 
             <label id="repeatPassword_label" for="repeat_password"><b>Repeat password</b></label>
-            <input type="password" name="repeat_password" size="40" placeholder="Reenter password"><br /><br>
+            <input type="password" name="repeat_password" size="40" placeholder="Reenter password">
+            <div id='passwordReenter_error' style="color: darkgreen;"></div>
+            <br>
 
             <label id="email_label" for="email"><b>Email</b></label>
-            <input type="email" name="email" size="40" placeholder="Enter email"><br /><br>
+            <input type="email" name="email" size="40" placeholder="Enter email">
+            <div id='email' style="color: darkgreen;"></div>
+            <br>
             <input type="submit" value="Submit" id="submit">
         </form> <br>
         <p>Already have an account? Login <a href="./login_page.html" style="color: darkgreen;">here</a></p>
