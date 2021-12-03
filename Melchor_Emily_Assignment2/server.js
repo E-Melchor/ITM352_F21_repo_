@@ -7,7 +7,6 @@ Assignment2 Server
 //create server framework with express
 var express = require('express');
 var app = express();
-
 //javascript modules
 var qs = require('querystring'); //querystring module (products display & invoice)
 const fs = require('fs'); //file system module (login & registration)
@@ -87,11 +86,10 @@ app.post("/purchase", function(request, response, next) {
 
     //if there's no errors, send to login page
     if (Object.keys(errors).length == 0) {
-        //response.redirect('./login_page.html?' + qstring);
         purchase_form_data = request.body;
         console.log(purchase_form_data);
         if (user_logged_in == true) {
-            response.redirect('./invoice.html')
+            response.redirect('./invoice.html' + purchase_form_data);
         } else {
             response.redirect('./login_page.html?');
         }
@@ -145,7 +143,6 @@ app.post("/register", function(request, response) {
     var password = request.body['password'];
     var confirm_password = request.body['repeat_password'];
     var email = request.body.email.toLowerCase();
-
     var reg_errors = {}; //start with no errors
 
     //validate username value
@@ -191,7 +188,6 @@ app.post("/register", function(request, response) {
     //confirm password
     if (confirm_password.length == 0) {
         reg_errors[`passwordReenter`] = `Reenter your password. `;
-
     } else if (password == confirm_password) {
         console.log('passwords match');
     } else {
@@ -209,7 +205,7 @@ app.post("/register", function(request, response) {
         reg_errors[`email`] = `Email is invalid. `;
     }
 
-    //if there's no errors, create a receipt??? or redirect to login page???
+    //if there's no errors, add registration info to user_data.json, log in user, and redirect to invoice
     if (Object.keys(reg_errors).length == 0) {
         user_reg_info
         user_reg_info[username] = {};
@@ -226,16 +222,7 @@ app.post("/register", function(request, response) {
         params.append('username', request.body.username); //put username into params
         response.redirect(`./registration.html?` + params.toString());
     }
-
-
-    //if there are no errors, enter form values to JSON file
-
-
-    //response.send(`new user ${username} with password as ${password}; repeat password ${confirm_password} and email is ${email}`);
-    //console.log(user_reg_info);
-
 });
-
 
 //--------------------login page--------------------
 //Process login form; modified from ex4.js in Lab14
@@ -252,8 +239,6 @@ app.post("/login", function(request, response) {
     if (typeof user_reg_info[username] != 'undefined') {
         if (user_reg_info[username].password == login_password) {
             console.log('no log in errors');
-
-
         } else {
             log_errors['incorrect_password'] = `Incorrect password for ${username}. Please try again.`;
         }
@@ -274,9 +259,7 @@ app.post("/login", function(request, response) {
         response.redirect('./login_page.html?' + `&log_error_string=${log_error_string} `);
         console.log(`log_error_string=${log_error_string} `);
     }
-
 });
-
 
 // route all other GET requests to files in public 
 app.use(express.static('./public'));
