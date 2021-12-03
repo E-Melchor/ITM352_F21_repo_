@@ -4,8 +4,11 @@ const { join } = require('path');
 const { json } = require('express');
 var app = express();
 
-var cookieParser = require('cookie-parser');
-app.use(cookieParser());
+//don't need cookieParser anymore because session already has cookieParser
+
+var session = require('express-session');
+const { type } = require('os');
+app.use(session({ secret: "MySecretKey", resave: true, saveUninitialized: true }));
 
 app.get('/set_cookie', function(request, response) {
     //this will send a cookie to the requester
@@ -19,6 +22,11 @@ app.get('/use_cookie', function(request, response) {
     response.send(`Welcome to the Use Cookie page ${request.cookies['name']}`);
 });
 
+app.get('/use_session', function(request, response) {
+    //this will send a cookie to the requester
+    //console.log(request.cookies);
+    response.send(`Welcome, your session ID is ${request.session.id}`);
+});
 
 var filename = './user_data.json';
 
@@ -74,7 +82,14 @@ app.post("/login", function(request, response) {
 
     if (typeof user_registration_info[login_username] != 'undefined') {
         if (user_registration_info[login_username]["password"] == login_password) {
-            response.send(`${login_username} is logged in`);
+            if (typeof request.session['last login'] != 'undefined') {
+                var last_login = request.session['last login'];
+            } else {
+                var last_login = 'First login!';
+            }
+            console.log(last_login);
+            request.session['last login'] = new Date().toISOString;
+            response.send(`You last logged in on ${last_login}`);
         } else {
             response.redirect(`./login?err=incorrect password for ${login_username}`);
         }
@@ -82,7 +97,7 @@ app.post("/login", function(request, response) {
         response.redirect(`./login?err=${login_username} does not exist`);
 
     }
-    response.send('processing request' + JSON.stringify(request.body));
+    //response.send('processing request' + JSON.stringify(request.body));
 });
 
 //create registration form
