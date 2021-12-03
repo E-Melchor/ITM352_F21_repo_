@@ -1,0 +1,101 @@
+<!--Author: Emily Melchor
+Description: create a new user with HTML form
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!--CSS stylesheets-->
+    <link rel="stylesheet" href="./CSS/login-reg-style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Comforter+Brush&family=Montagu+Slab:wght@300">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New User Registration</title>
+    <!--Add error message if there's any invalid quantities-->
+</head>
+
+<script>
+    let params = (new URL(document.location)).searchParams;
+    // get the query string which has the form data
+
+    window.onload = function() {
+        // check whether username is valid then redirect to invoice if ok.
+        /* if (params.has('reg_errors')) {
+             var errors = JSON.parse(params.get('reg_errors')); //turns string in object
+             let err_str = '';
+             for (err in errors) { //combine errors in one string
+                 err_str += errors[err] + '\n';
+                 document.getElementById(`${err}_label`).innerHTML = `<font color="red">${errors[err]}</font>`;
+             }
+             console.log(err_str);
+         }
+         // make data sticky
+         if (params.has('reg_data')) {
+             var reg_data = JSON.parse(params.get('reg_data')); //turns string in object
+             for (id in reg_data) {
+                 document.getElementById(id).value = reg_data[id];
+             }
+         }*/
+        /* if (params.has('reg_errors')) {
+            var errors = JSON.parse(params.get('reg_errors'));
+            console.log("invalid");
+            // make register form sticky
+            for (i = 0; i < register_form.elements.length; i++) {
+                register_form[i].value = params.get(register_form[i].name);
+                if (typeof errors[register_form[i].name] != 'undefined') {
+                    document.getElementById(register_form[i].name + '_error').innerHTML = errors[register_form[i].name];
+                }
+            }
+        }*/
+        if (params.has('reg_errors')) {
+            var errors = JSON.parse(params.get('reg_errors'));
+
+            for (i = 0; i < register_form.elements.length; i++) {
+                register_form[i].value = params.get(register_form[i].name);
+                if (typeof errors[register_form[i].name] != 'undefined') {
+                    document.getElementById(register_form[i].name + '_error').innerHTML = errors[register_form[i].name];
+                }
+            }
+        }
+    }
+</script>
+
+<body>
+    <!--code: modified from ex4.js in Lab14-->
+    <h1 style="font-size: 50pt;">The Jasmine Dragon</h1>
+    <h2>Create your new account!</h2>
+    <center>
+        <form name="register_form" action="./register" method="POST">
+            <label id="username_label" for="username"><b>Username</b></label>
+            <input type="text" name="username" size="40" placeholder="Enter username">
+            <div id='username_error' style="color: darkgreen;"></div>
+            <br>
+
+            <label id="name_label"><b>Full Name</b></label>
+            <input type="text" name="name" size="40" placeholder="Enter full name">
+            <div id='name_error' style="color: darkgreen;"></div>
+            <br>
+
+            <label id="password_label" for="password"><b>Password</b></label>
+            <input type="password" name="password" size="40" placeholder="Enter password">
+            <div id='password_error' style="color: darkgreen;"></div>
+            <br>
+
+            <label id="repeatPassword_label" for="repeat_password"><b>Repeat password</b></label>
+            <input type="password" name="repeat_password" size="40" placeholder="Reenter password">
+            <div id='passwordReenter_error' style="color: darkgreen;"></div>
+            <br>
+
+            <label id="email_label" for="email"><b>Email</b></label>
+            <input type="email" name="email" size="40" placeholder="Enter email">
+            <div id='email' style="color: darkgreen;"></div>
+            <br>
+            <input type="submit" value="Submit" id="submit">
+        </form> <br>
+        <p>Already have an account? Login <a href="./login_page.html" style="color: darkgreen;">here</a></p>
+        <img src="./images/dragon_logo.png" height="100" width="auto" style="padding: 25px 25px 25px 25px;">
+    </center>
+</body>
+
+</html>
