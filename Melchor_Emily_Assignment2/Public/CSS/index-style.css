@@ -1,0 +1,57 @@
+/* General */
+
+body {
+    width: 800px;
+    margin: 0 auto;
+    background-color: darkseagreen;
+}
+
+
+/* Typography, font-family from Google fonts at https://fonts.google.com*/
+
+h1,
+h2,
+p {
+    text-align: center;
+}
+
+h1 {
+    font-family: 'Comforter Brush';
+    font-size: 50pt;
+    color: darkgreen;
+    margin: 5px;
+}
+
+h2 {
+    font-family: 'Comforter Brush';
+    font-size: 30pt;
+    color: white;
+}
+
+p {
+    font-family: 'Montagu Slab', serif;
+    font-size: 20pt;
+    margin-bottom: 0;
+}
+
+
+/* Block styling */
+
+main {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+}
+
+
+/* Styling the products display */
+
+img {
+    height: 300px;
+    width: 300px;
+    margin-top: 0;
+}
+
+img:hover {
+    opacity: 0.75;
+}
