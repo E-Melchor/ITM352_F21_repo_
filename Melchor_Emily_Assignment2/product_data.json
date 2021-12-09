@@ -1,30 +1,30 @@
 [{
         "flavor": "Brown Sugar Boba",
-        "price": 4.55,
+        "price": 4.00,
         "image": "sugar.jpg",
         "quantity_available": 30
     },
     {
         "flavor": "Green Tea Boba",
-        "price": 3.06,
+        "price": 3.50,
         "image": "matcha.jpg",
         "quantity_available": 40
     },
     {
         "flavor": "Jasmine Tea Boba",
-        "price": 2.19,
+        "price": 4.50,
         "image": "jasmine.jpg",
         "quantity_available": 10
     },
     {
         "flavor": "Chai Tea Boba",
-        "price": 7.08,
+        "price": 5.00,
         "image": "chai.jpg",
         "quantity_available": 50
     },
     {
         "flavor": "Taro Boba",
-        "price": 2.05,
+        "price": 3.50,
         "image": "taro.jpg",
         "quantity_available": 20
     }
