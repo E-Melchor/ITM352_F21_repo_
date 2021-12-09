@@ -78,9 +78,16 @@ app.post("/login", function(request, response) {
     // Redirect to logged in page if ok, back to login page if not
     let login_username = request.body['username'];
     let login_password = request.body['password'];
+
+    var lastLoginTime = 'first login!'
+        //get last login from session if it exists; if not, create first login
+    if (typeof request.session.lastlogin != 'undefined') {
+        lastLoginTime = request.session.lastlogin;
+    }
+
     //check if username exists, then check password entered matched password stored
 
-    if (typeof user_registration_info[login_username] != 'undefined') {
+    /*if (typeof user_registration_info[login_username] != 'undefined') {
         if (user_registration_info[login_username]["password"] == login_password) {
             if (typeof request.session['last login'] != 'undefined') {
                 var last_login = request.session['last login'];
@@ -96,7 +103,7 @@ app.post("/login", function(request, response) {
     } else {
         response.redirect(`./login?err=${login_username} does not exist`);
 
-    }
+    }*/
     //response.send('processing request' + JSON.stringify(request.body));
 });
 
