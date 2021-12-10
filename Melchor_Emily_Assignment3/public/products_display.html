@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script src="./product_data.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="./CSS/products-style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Comforter+Brush&family=Poppins:wght@200">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Jasmine Dragon</title>
+    <!--Add error message if there's any invalid quantities-->
+    <script>
+        window.onload = () => {
+            //get query string
+            let params = (new URL(document.location)).searchParams;
+            //if there's an error, add error message
+            if (params.has('error_string')) {
+                alert(params.get('error_string'));
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <!--Top bar, from W3 Schools at https://www.w3schools.com/w3css/tryit.asp?filename=tryw3css_templates_food_blog&stacked=h-->
+    <div class="w3-top">
+        <div class="w3-white w3-xlarge" style="max-width:auto;margin:auto">
+            <div class="w3-center w3-padding-16" style="font-family: Comforter Brush; font-size: 35pt; color: darkgreen;">The Jasmine Dragon</div>
+        </div>
+    </div>
+
+    <!-- Page content -->
+    <h2 style="font-family: Comforter Brush; font-size: 25pt; color: white; margin-top: 101px;">Best Boba Shop in Ba Sing Se!</h2>
+    <p style="text-align: center;">To make your online order, enter the number of drinks you would like underneath the flavor. Click the Place Order button at the bottom of the page to submit your order and receive a receipt.</p><br>
+
+    <!-- Form code, modified from SmartPhoneProducts WODs -->
+    <div>
+        <form action="./purchase" method="post">
+            <main>
+                <script>
+                    for (i in products) {
+                        document.write(`
+        <section class="item">
+            <h2>${products[i].flavor}</h2>
+            <p>$${products[i].price}</p>
+            <p>${products[i].quantity_available}</p>
+            <center><input type ="text" placeholder="0" name= "quantity_textbox${i}" onkeyup="checkQuantity${this};"></center><br>
+            <img src=./images/${products[i].image}>
+        </section>
+        `);
+                    }
+                </script>
+            </main>
+            <center><input type="submit" name="purchase_order" value="Place Order"></center>
+        </form>
+    </div>
+
+    <center><img src="./images/dragon_logo.png"></center>
+</body>
+
+</html>

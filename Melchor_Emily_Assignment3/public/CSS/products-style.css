@@ -1,0 +1,107 @@
+/* General */
+
+body {
+    width: 800px;
+    margin: 0 auto;
+    background-image: url("../images/aang.gif");
+    background-repeat: no-repeat;
+    background-position: right bottom;
+}
+
+
+/* Typography, font-family from Google fonts at https://fonts.google.com*/
+
+h1,
+h2 {
+    text-align: center;
+}
+
+h1 {
+    font-family: 'Comforter Brush';
+    font-size: 50pt;
+    color: darkgreen;
+}
+
+h2,
+p {
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+}
+
+
+/* Block styling */
+
+main {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+}
+
+
+/* Form styling */
+
+body {
+    background-color: darkseagreen;
+}
+
+input[type=text] {
+    border: 4px solid darkgreen;
+    border-radius: 10px;
+}
+
+input[type=submit] {
+    background-color: white;
+    color: darkgreen;
+    border-radius: 10px;
+    padding: 20px 20px 20px 20px;
+}
+
+
+/* Styling the products display */
+
+img {
+    height: 200px;
+    width: 200px;
+    padding: 25px 50px 50px 50px;
+}
+
+
+/*Styling for top bar; from W3 Schools at https://www.w3schools.com/w3css/4/w3.css*/
+
+.w3-top {
+    position: fixed;
+    width: 100%;
+    z-index: 1
+}
+
+.w3-top {
+    top: 0
+}
+
+.w3-topbar {
+    border-top: 6px solid #ccc!important
+}
+
+.w3-white,
+.w3-hover-white:hover {
+    color: #000!important;
+    background-color: darkseagreen!important
+}
+
+.w3-xlarge {
+    font-size: 24px!important
+}
+
+.w3-xxlarge {
+    font-size: 36px!important
+}
+
+.w3-padding-16 {
+    padding-top: 16px!important;
+    padding-bottom: 16px!important
+}
+
+.w3-padding-24 {
+    padding-top: 24px!important;
+    padding-bottom: 24px!important
+}
