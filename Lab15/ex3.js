@@ -2,9 +2,11 @@ const fs = require('fs');
 var express = require('express');
 var app = express();
 
-//don't need cookieParser anymore because session already has cookieParser
+var cookieParser = require('cookie-parser');
+app.use(cookieParser());
 
 var session = require('express-session');
+const { cookie } = require('express/lib/response');
 app.use(session({ secret: "MySecretKey", resave: true, saveUninitialized: true }));
 
 app.get('/set_cookie', function(request, response) {
@@ -57,16 +59,21 @@ app.use(express.urlencoded({ extended: true }));
 
 //create login form
 app.get("/login", function(request, response) {
+    var welcome_str = 'Welcome! Please log in.'
+    if (typeof request.cookies.username != 'undefined') {
+        welcome_str = `Welcome back ${request.cookies.username}! Your last login was on ${request.session['last login']}`;
+    }
     // Give a simple login form
     str = `
-<body>
-<form action="" method="POST">
-<input type="text" name="username" size="40" placeholder="enter username" ><br />
-<input type="password" name="password" size="40" placeholder="enter password"><br />
-<input type="submit" value="Submit" id="submit">
-</form>
-</body>
-    `;
+        <body>
+        ${welcome_str} <br>
+        <form action="" method="POST">
+        <input type="text" name="username" size="40" placeholder="enter username" ><br />
+        <input type="password" name="password" size="40" placeholder="enter password"><br />
+        <input type="submit" value="Submit" id="submit">
+        </form>
+        </body>
+        `;
     response.send(str);
 });
 
@@ -83,9 +90,10 @@ app.post("/login", function(request, response) {
             if (typeof request.session['last login'] != 'undefined') {
                 var last_login = request.session['last login'];
             } else {
-                var last_login = 'first visit!';
+                var last_login = request.session['last login'] = 'first visit'
             }
             request.session['last login'] = new Date().toISOString(); //put login date into session
+            response.cookie('username', login_username);
             response.send(`Your last login was on ${last_login}`);
         } else {
             response.redirect(`./login?err=incorrect password for ${login_username}`);

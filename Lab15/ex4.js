@@ -23,6 +23,7 @@ app.get('/use_session', function(request, response) {
     //this will send a cookie to the requester
     //console.log(request.cookies);
     response.send(`Welcome, your session ID is ${request.session.id}`);
+    session.destroy();
 });
 
 var filename = './user_data.json';
