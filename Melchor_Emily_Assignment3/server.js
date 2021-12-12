@@ -110,6 +110,89 @@ let data_str = fs.readFileSync(filename, 'utf-8');
 var user_reg_info = JSON.parse(data_str);
 console.log(user_reg_info);
 
+app.post("/register", function(request, response) {
+    //define new username, password, repeat password, and email
+    //.toLowerCase makes case insensitive
+    var username = request.body.username.toLowerCase();
+    var name = request.body['name'];
+    var password = request.body['password'];
+    var repeat_password = request.body['repeat_password'];
+    var email = request.body.email.toLowerCase();
+    var reg_errors = {}; //start with no errors
+
+    //-------validate username value-------
+    //Username length = min. 4 characters and max. 10 characters
+    if (username.length < 4 || username.length > 10) {
+        reg_errors[`username`] = `Username must be between 4 and 10 characters.`;
+    } else if (username.length == 0) {
+        reg_errors[`username`] = `Enter a username. `;
+    }
+    //Username = only letters and numbers
+    //.match from https://stackoverflow.com/questions/3853543/checking-input-values-for-special-symbols
+    if (username.match(/^[a-zA-Z0-9_]+$/) == false) {
+        reg_errors[`username`] = `Username can only consist of letters and numbers. `;
+    }
+    //Username is already taken
+    if (typeof user_reg_info[username] != 'undefined') {
+        reg_errors[`username`] = `Username is already taken. `;
+    }
+    //-------validate name value-------
+    //name cannot be more than 30 characters
+    if (name.length == 0) {
+        reg_errors[`name`] = `Enter your full name. `;
+    } else if (name.length > 30) {
+        reg_errors[`name`] = `Name cannot be more than 30 characters. `;
+    }
+    //name can only have letters
+    if (name.match(/^[a-zA-Z_]+$/) == false) {
+        reg_errors[`name`] = `Name can only consist of letters. `;
+    }
+    //-------validate password value-------
+    //password must be at least 6 characters minimum
+    if (password.length == 0) {
+        reg_errors[`password`] = `Enter a password. `;
+    } else if (password.length < 6) {
+        reg_errors[`password`] = `Password is too short. `;
+    }
+    //-------validate reentered password value-------
+    if (repeat_password.length == 0) {
+        reg_errors[`repeat_password`] = `Reenter your password. `;
+    } else if (password == repeat_password) {
+        console.log('passwords match');
+    } else {
+        reg_errors[`repeat_password`] = `Passwords do not match, please try again. `;
+    }
+    //-------validate email value-------
+    if (email.length == 0) {
+        reg_errors[`email`] = `Enter your email. `;
+    }
+    //.match from https://www.w3resource.com/javascript/form/email-validation.php
+    else if (email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
+        console.log(`email is ${email}`);
+    } else {
+        reg_errors[`email`] = `Email is invalid. `;
+    }
+
+    //if there's no errors, add registration info to user_data.json, log in user, and redirect to invoice
+    if (Object.keys(reg_errors).length == 0) {
+        user_reg_info
+        user_reg_info[username] = {};
+        user_reg_info[username].name = request.body.name;
+        user_reg_info[username].password = request.body.password;
+        user_reg_info[username].email = request.body.email;
+        fs.writeFileSync(filename, JSON.stringify(user_reg_info));
+        response.redirect(`./invoice.html?`);
+    } else {
+        let errs_obj = { "reg_errors": JSON.stringify(reg_errors) };
+        let params = new URLSearchParams(errs_obj);
+        params.append('reg_data', JSON.stringify(request.body)); //put reg data into params
+        params.append('username', request.body.username); //put username into params
+        params.append('email', request.body.email); //put username into params
+        params.append('name', request.body.name); //put username into params
+        response.redirect(`./registration.html?` + params.toString());
+    }
+});
+
 //--------------------LOGIN--------------------
 //Process login form; modified from ex4.js in Lab14
 

@@ -1,0 +1,74 @@
+<!--Emily Melchor
+Registration form for new users
+Template from https://www.w3schools.com/howto/howto_css_register_form.asp
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!--CSS stylesheets-->
+    <link rel="stylesheet" href="./CSS/reg.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Comforter+Brush&family=Montagu+Slab:wght@300">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New User Registration</title>
+    <!--Add error message if there's any invalid quantities-->
+</head>
+
+<script>
+    let params = (new URL(document.location)).searchParams;
+    // get the query string which has the form data
+
+    window.onload = function() {
+        if (params.has('reg_errors')) {
+            var errors = JSON.parse(params.get('reg_errors'));
+
+            for (i = 0; i < register_form.elements.length; i++) {
+                register_form[i].value = params.get(register_form[i].name);
+                if (typeof errors[register_form[i].name] != 'undefined') {
+                    document.getElementById(register_form[i].name + '_error').innerHTML = errors[register_form[i].name];
+                }
+            }
+        }
+    }
+</script>
+
+<body>
+    <form name="register_form" action="./register" method="POST">
+        <div class="container">
+            <h1>Register</h1>
+            <p>Please fill in this form to create an account.</p>
+            <hr>
+
+            <label id="name_label"><b>Full Name</b></label>
+            <div id='name_error' style="color: darkgreen;" required></div>
+            <input type="text" name="name" placeholder="Enter Full Name">
+
+            <label id="username_label"><b>Username</b></label>
+            <div id='username_error' style="color: darkgreen;" required></div>
+            <input type="text" name="username" placeholder="Enter Username">
+
+            <label id="password_label"><b>Password</b></label>
+            <div id='password_error' style="color: darkgreen;" required></div>
+            <input type="password" name="password" placeholder="Enter Password">
+
+            <label id="repeatPassword_label"><b>Repeat Password</b></label>
+            <div id='repeat_password_error' style="color: darkgreen;" required></div>
+            <input type="password" name="repeat_password" placeholder="Repeat Password">
+
+            <label id="email_label"><b>Email</b></label>
+            <div id='email_error' style="color: darkgreen;" required></div>
+            <input type="text" name="email" placeholder="Enter Email">
+            <hr>
+
+            <button type="submit" class="registerbtn">Register</button>
+        </div>
+
+        <div class="container signin">
+            <p>Already have an account? <a href="./login_page.html" style="color: darkgreen;">Login</a>.</p>
+        </div>
+    </form>
+</body>
+
+</html>
