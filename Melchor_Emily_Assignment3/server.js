@@ -1,27 +1,29 @@
 //server code: modified from info_server_Ex5.js in Lab13
 
-//create server framework with express
+//Javascript modules
 var express = require('express');
 var app = express();
-
-//querystring package
 var qs = require('querystring');
+const fs = require('fs'); //file system module (login & registration)
+var session = require('express-session');
+app.use(session({ secret: "MySecretKey", resave: true, saveUninitialized: true }));
 
-//To access inputted data from products_display.html
+//To access inputted data
 app.use(express.urlencoded({ extended: true }));
 
+// monitor all requests; from info_server_Ex5.js in Lab13
+app.all('*', function(request, response, next) {
+    console.log(request.method + ' to ' + request.path);
+    next();
+});
+
+//--------------------PRODUCTS--------------------
 //products data
 var products = require('./product_data.json');
 app.get("/product_data.js", function(request, response) {
     response.type('.js');
     var products_str = `var products = ${JSON.stringify(products)};`;
     response.send(products_str);
-});
-
-// monitor all requests; from info_server_Ex5.js in Lab13
-app.all('*', function(request, response, next) {
-    console.log(request.method + ' to ' + request.path);
-    next();
 });
 
 // process purchase request (validate quantities, check quantity available)
@@ -42,7 +44,6 @@ app.post("/purchase", function(request, response, next) {
         } else {
             continue;
         }
-
         //check if quantity is a non-negative integer
         if (has_quantity == true && isNonNegInt(quantity)) {
             products[i].total_sold += Number(quantity);
@@ -54,7 +55,6 @@ app.post("/purchase", function(request, response, next) {
         //check if there is enough in inventory
         //access quantity_available from json file
         let inventory = products[i].quantity_available;
-
         //if quantity ordered is less than or same as the amount in inventory, reduce inventory by quantity ordered amount 
         if (Number(quantity) <= inventory) {
             products[i].quantity_available -= Number(quantity);
@@ -102,6 +102,50 @@ function isNonNegInt(q, returnErrors = false) {
     }
     return returnErrors ? errors : (errors.length == 0);
 };
+
+//--------------------REGISTRATION--------------------
+var filename = './user_data.json';
+//have reg data file, so read data and parse into user_reg_info object
+let data_str = fs.readFileSync(filename, 'utf-8');
+var user_reg_info = JSON.parse(data_str);
+console.log(user_reg_info);
+
+//--------------------LOGIN--------------------
+//Process login form; modified from ex4.js in Lab14
+
+app.post("/login", function(request, response) {
+    // Redirect to logged in page if ok, back to login page if not
+    let username = request.body.username.toLowerCase();
+    let password = request.body['password'];
+    var log_errors = []; //start with no errors
+
+    //check if username exists, then check password entered matched password stored
+    if (typeof user_reg_info[username] != 'undefined') {
+        if (user_reg_info[username].password == password) {
+            console.log('no errors for login');
+        } else {
+            log_errors['incorrect_password'] = `Incorrect password for ${username}. Please try again.`;
+        }
+    } else {
+        log_errors['incorrect_username'] = `Username ${username} is incorrect. Please try again.`;
+        //response.redirect(`./login?err=${username} does not exist`);
+    }
+    if (Object.keys(log_errors).length == 0) {
+        response.cookie('username', username);
+        console.log(`${username} is logged in`);
+
+        response.redirect('./index.html?' + username);
+    } else {
+        //generate registration error message
+        let log_error_string = '';
+        for (err in log_errors) {
+            log_error_string += log_errors[err];
+        }
+        //response.send(reg_error_string);
+        response.redirect('./login_page.html?' + `&log_error_string=${log_error_string} `);
+        console.log(`log_error_string=${log_error_string} `);
+    }
+});
 
 // route all other GET requests to files in public 
 app.use(express.static('./public'));

@@ -1,10 +1,13 @@
-<!--Author: Emily Melchor
-Description: shows login page for returning users; button redirects new users to registration-->
+<!-- Emily Melchor
+Login page; button redirects new users to registration 
+Template from https://www.w3schools.com/howto/howto_css_login_form.asp -->
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <link rel="stylesheet" href="./CSS/login-reg-style.css">
+    <link rel="stylesheet" href="./CSS/login.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Karma">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Comforter+Brush&family=Montagu+Slab:wght@300">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -14,32 +17,40 @@ Description: shows login page for returning users; button redirects new users to
         window.onload = () => {
             //get query string
             let params = (new URL(document.location)).searchParams;
-            //if there's an error, add error message
-            if (params.has('log_error_string')) {
-                alert(params.get('log_error_string'));
-            }
             //make username sticky
             if (params.has('username')) {
                 username.value = params.get('username');
+            }
+            //if there's an error, add error message
+            if (params.has('log_error_string')) {
+                alert(params.get('log_error_string'));
             }
         }
     </script>
 </head>
 
-<body>
-    <!--code: modified from ex4.js in Lab14-->
-    <h1 style="font-size: 50pt;">The Jasmine Dragon</h1>
-    <h2>Please log in to complete your order!</h2>
-    <center>
-        <!--for action = whatever the app.post route will be on server-->
-        <form action="./login" method="POST">
-            <input type="text" name="username" size="40" placeholder="Enter username"><br>
-            <input type="password" name="password" size="40" placeholder="Enter password"><br>
-            <input type="submit" value="Submit" id="submit">
-        </form>
-        <p>Create a new account <a href="./registration.html" style="color: darkgreen;">here</a></p>
-        <img src="./images/dragon_logo.png" height="100" width="auto" style="padding: 25px 25px 25px 25px;">
-    </center>
-</body>
+<form action="/login" method="POST">
+    <div class="imgcontainer">
+        <img src="./images/dragon_logo.png" style="height:200px;width:200px">
+    </div>
+
+    <div class="container">
+        <label for="username"><b>Username</b></label>
+        <input type="text" placeholder="Enter Username" name="username" required>
+
+        <label for="password"><b>Password</b></label>
+        <input type="password" placeholder="Enter Password" name="password" required>
+
+        <button type="submit">Login</button>
+        <label>
+        <input type="checkbox" checked="checked" name="remember"> Remember me
+      </label>
+    </div>
+
+    <div class="container" style="background-color:#f1f1f1">
+        <a href="./index.html" style="text-decoration: none;">Back to home</a>
+        <span class="psw">Create new <a href="./registration.html">account</a></span>
+    </div>
+</form>
 
 </html>
