@@ -230,6 +230,8 @@ app.post("/login", function(request, response) {
     }
 });
 
+
+
 // route all other GET requests to files in public 
 app.use(express.static('./public'));
 
