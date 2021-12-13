@@ -1,0 +1,116 @@
+{
+    "Jasmine Tea Boba": [{
+            "size": "small",
+            "price": 2.50,
+            "quantity": 10
+
+        },
+        {
+            "size": "medium",
+            "price": 3.50,
+            "quantity": 10
+
+        },
+        {
+            "size": "large",
+            "price": 4.50,
+            "quantity": 10
+
+        }
+    ],
+    "Green Tea Boba": [{
+            "size": "small",
+            "price": 2.50,
+            "quantity": 10
+
+        },
+        {
+            "size": "medium",
+            "price": 3.50,
+            "quantity": 10
+
+        },
+        {
+            "size": "large",
+            "price": 4.50,
+            "quantity": 10
+
+        }
+    ],
+    "Chai Tea Boba": [{
+            "size": "small",
+            "price": 2.50,
+            "quantity": 10
+
+        },
+        {
+            "size": "medium",
+            "price": 3.50,
+            "quantity": 10
+
+        },
+        {
+            "size": "large",
+            "price": 4.50,
+            "quantity": 10
+
+        }
+    ],
+    "Taro Boba": [{
+            "size": "small",
+            "price": 2.50,
+            "quantity": 10
+
+        },
+        {
+            "size": "medium",
+            "price": 3.50,
+            "quantity": 10
+
+        },
+        {
+            "size": "large",
+            "price": 4.50,
+            "quantity": 10
+
+        }
+    ],
+    "Brown Sugar Boba": [{
+            "size": "small",
+            "price": 2.50,
+            "quantity": 10
+
+        },
+        {
+            "size": "medium",
+            "price": 3.50,
+            "quantity": 10
+
+        },
+        {
+            "size": "large",
+            "price": 4.50,
+            "quantity": 10
+
+        }
+    ],
+    "Strawberry Boba": [{
+            "size": "small",
+            "price": 2.50,
+            "quantity": 10
+
+        },
+        {
+            "size": "medium",
+            "price": 3.50,
+            "quantity": 10
+
+        },
+        {
+            "size": "large",
+            "price": 4.50,
+            "quantity": 10
+
+        }
+    ]
+}
