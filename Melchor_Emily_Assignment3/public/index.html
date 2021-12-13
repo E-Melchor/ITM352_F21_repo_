@@ -7,6 +7,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="./product_data.js" type="text/javascript"></script>
+<script src="./functions.js"></script>
+
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Karma">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Comforter+Brush">
@@ -26,14 +28,13 @@
 </style>
 
 <body>
-
     <!-- Sidebar (hidden by default) -->
     <nav class="w3-sidebar w3-bar-block w3-card w3-top w3-xlarge w3-animate-left" style="display:none;z-index:2;width:40%;min-width:300px" id="mySidebar">
         <a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button">Close Menu</a>
         <script>
             for (i in products) {
                 document.write(`
-                <a href="./${products[i].flavor}.html" onclick="w3_close()" class="w3-bar-item w3-button">${products[i].flavor}</a>
+                <a href="./display_products.html?products_key=${i}" onclick="w3_close()" class="w3-bar-item w3-button">${products[i].flavor}</a>
                 `)
             }
         </script>
