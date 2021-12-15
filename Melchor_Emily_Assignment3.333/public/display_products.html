@@ -70,7 +70,10 @@ Modified from Multi_Page_Nav example; top menu modified from Food Blog Template 
             <INPUT TYPE="HIDDEN" NAME="products_key" VALUE="${products_key}">`;
 
         for (i = 0; i < products.length; i++) {
-            order_str += `<div class="w3-quarter"><img src="./images/${products[i]['image']}" style="height:200px;width:auto"><br>${products[i]['type']}<br>${products[i]['price']}<br><INPUT TYPE="TEXT" name="quantities${i}" placeholder="Enter Quantity"><br></div>`;
+            order_str += `<div class="w3-quarter"><img src="./images/${products[i]['image']}" style="height:200px;width:auto"><br>
+            ${products[i]['type']}<br>
+            $${products[i]['price'].toFixed(2)} | Quantity in Stock: ${products[i]['quantity']}<br>
+            <INPUT TYPE="TEXT" name="quantities${i}" placeholder="Enter Quantity"><br></div>`;
         }
         order_str += `<div><INPUT TYPE="SUBMIT"  name="Submit" value="Add to Cart"></div></FORM>`;
     } // this closes the else for the form and table display

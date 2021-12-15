@@ -1,32 +1,32 @@
 {
     "Green Tea": [{
             "type": "Matcha",
-            "price": 2.50,
+            "price": 3.50,
             "quantity": 10,
             "image": "matcha.jpg"
         },
         {
             "type": "Jasmine",
-            "price": 3.50,
+            "price": 4.50,
             "quantity": 10,
             "image": "jasmine.jpg"
         },
         {
             "type": "Sencha",
-            "price": 4.50,
+            "price": 2.50,
             "quantity": 10,
             "image": "sencha.jpg"
         }
     ],
     "Black Tea": [{
             "type": "Earl Grey",
-            "price": 2.50,
+            "price": 3.50,
             "quantity": 10,
             "image": "earlgrey.jpg"
         },
         {
             "type": "Darjeeling",
-            "price": 3.50,
+            "price": 2.50,
             "quantity": 10,
             "image": "darjeeling.jpg"
         },
@@ -58,7 +58,7 @@
     ],
     "Rooibos Tea": [{
             "type": "Red",
-            "price": 2.50,
+            "price": 3.50,
             "quantity": 10,
             "image": "red.jpg"
         },
