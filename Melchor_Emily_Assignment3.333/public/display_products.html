@@ -1,6 +1,6 @@
 <!--Emily Melchor
 Home Page
-Modified from Multi_Page_Nav example-->
+Modified from Multi_Page_Nav example; top menu modified from Food Blog Template (https://www.w3schools.com/w3css/w3css_templates.asp)-->
 <title>The Jasmine Dragon</title>
 
 <head>
@@ -8,7 +8,7 @@ Modified from Multi_Page_Nav example-->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Karma">
-    <link rel="stylesheet" href="./CSS/home.css">
+    <link rel="stylesheet" href="./CSS/display.css">
     <script src="./functions.js"></script>
     <script>
         // get the query string
@@ -39,10 +39,10 @@ Modified from Multi_Page_Nav example-->
         </div>
     </div>
     <div class="w3-main w3-content w3-padding" style="max-width:1200px;margin-top:75px">
+        <!-- Navigation bar -->
         <center>
             <a href='index.html' style='color: darkgreen;'>Home<a>&nbsp&nbsp&nbsp;
             <script>
-                // This makes a navigation bar to other product pages
                 for (products_key in products_data) {
                     if (products_key == this_product_key) continue;
                     document.write(`<a style='color: darkgreen;' href='./display_products.html?products_key=${products_key}'>${products_key}<a>&nbsp&nbsp&nbsp;`);
@@ -50,8 +50,8 @@ Modified from Multi_Page_Nav example-->
             </script>
 </center>
 
+<!-- Products Pages -->
 <script>
-
     // This function takes a string assumed to be a key in the products array above to display and select the corresponding products
     var order_str = '';
     // get the particular products to display
@@ -63,21 +63,16 @@ Modified from Multi_Page_Nav example-->
             order_str += `You want ${params.get(`quantities${i}`)} of ${products[i]['name']}<br>`;
         }
     } else {
-        order_str += `<center><h1>${products_key}</h1></center><br>`;
+        order_str += `<center><h2>${this_product_key}</h2></center><br>`;
         // We put the whole table in the form so that anything entered in it will get submitted
         order_str += `<center>
             <FORM action="" method="GET">
-            <INPUT TYPE="HIDDEN" NAME="products_key" VALUE="${products_key}">
-                <TABLE BORDER>
-                    <TR><TD><B><BIG>Variety</TD><TD><B><BIG>Price</TD><TD><B><BIG>Quantity</TD></TR></center>`;
+            <INPUT TYPE="HIDDEN" NAME="products_key" VALUE="${products_key}">`;
 
         for (i = 0; i < products.length; i++) {
-            order_str += `<TR><TD>${products[i]['type']}</TD><TD>${products[i]['price']}</TD><TD>
-                <INPUT TYPE="TEXT"  name="quantities${i}"></TD></TR>`;
+            order_str += `<div class="w3-quarter"><img src="./images/${products[i]['image']}" style="height:200px;width:auto"><br>${products[i]['type']}<br>${products[i]['price']}<br><INPUT TYPE="TEXT" name="quantities${i}" placeholder="Enter Quantity"><br></div>`;
         }
-        order_str += `</TABLE><br>
-<INPUT TYPE="SUBMIT"  name="Submit" value="Select">
-</FORM>`;
+        order_str += `<div><INPUT TYPE="SUBMIT"  name="Submit" value="Add to Cart"></div></FORM>`;
     } // this closes the else for the form and table display
     document.write(order_str);
 </script>

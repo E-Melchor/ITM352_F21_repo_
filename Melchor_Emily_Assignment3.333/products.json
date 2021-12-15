@@ -2,77 +2,77 @@
     "Green Tea": [{
             "type": "Matcha",
             "price": 2.50,
-            "quantity": 10
-
+            "quantity": 10,
+            "image": "matcha.jpg"
         },
         {
             "type": "Jasmine",
             "price": 3.50,
-            "quantity": 10
-
+            "quantity": 10,
+            "image": "jasmine.jpg"
         },
         {
             "type": "Sencha",
             "price": 4.50,
-            "quantity": 10
-
+            "quantity": 10,
+            "image": "sencha.jpg"
         }
     ],
     "Black Tea": [{
             "type": "Earl Grey",
             "price": 2.50,
-            "quantity": 10
-
+            "quantity": 10,
+            "image": "earlgrey.jpg"
         },
         {
             "type": "Darjeeling",
             "price": 3.50,
-            "quantity": 10
-
+            "quantity": 10,
+            "image": "darjeeling.jpg"
         },
         {
             "type": "Chai",
             "price": 4.50,
-            "quantity": 10
-
+            "quantity": 10,
+            "image": "chai.png"
         }
     ],
     "Oolong Tea": [{
             "type": "Peach",
             "price": 2.50,
-            "quantity": 10
-
+            "quantity": 10,
+            "image": "peach.jpg"
         },
         {
             "type": "Jin Xuan",
             "price": 3.50,
-            "quantity": 10
-
+            "quantity": 10,
+            "image": "jinxuan.jpg"
         },
         {
             "type": "Red Robe",
             "price": 4.50,
-            "quantity": 10
-
+            "quantity": 10,
+            "image": "redrobe.jpg"
         }
     ],
     "Rooibos Tea": [{
             "type": "Red",
             "price": 2.50,
-            "quantity": 10
-
+            "quantity": 10,
+            "image": "red.jpg"
         },
         {
             "type": "Green",
             "price": 3.50,
-            "quantity": 10
-
+            "quantity": 10,
+            "image": "green.jpg"
         },
         {
             "type": "Cinnamon",
             "price": 4.50,
-            "quantity": 10
-
+            "quantity": 10,
+            "image": "cinnamon.jpg"
         }
     ]
 }

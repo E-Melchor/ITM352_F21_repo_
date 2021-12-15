@@ -20,11 +20,10 @@ app.all('*', function(request, response, next) {
     next();
 });
 
+//--------------------PRODUCTS + CART--------------------
 app.get("/get_products_data", function(request, response) {
     response.json(products_data);
 });
-
-
 
 app.use(function(request, response, next) {
     if (request.path != "/display_products.html") { return next(); }
