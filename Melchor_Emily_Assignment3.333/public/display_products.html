@@ -1,4 +1,14 @@
+<!--Emily Melchor
+Home Page
+Modified from Multi_Page_Nav example-->
+<title>The Jasmine Dragon</title>
+
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Karma">
+    <link rel="stylesheet" href="./CSS/home.css">
     <script src="./functions.js"></script>
     <script>
         // get the query string
@@ -9,21 +19,33 @@
             document.write('no products key in query string');
             document.stop;
         }
-
         var products_data;
-        loadJSON('products.json', function(response) {
+        loadJSON('get_products_data', function(response) {
             // Parsing JSON string into object
             products_data = JSON.parse(response);
         });
     </script>
 </head>
-<center>
-    <a href='index.html'>HOME<a>&nbsp&nbsp&nbsp;
+
+<body>
+    <!-- Top menu -->
+    <div class="w3-top">
+        <div class="w3-white w3-xlarge" style="max-width:1200px;margin:auto">
+            <div class="w3-button w3-padding-16 w3-left">
+                <a href="./index.html"><img src="./images/dragon_logo.png" style="height: 45px;"></a>
+            </div>
+            <div class="w3-right w3-padding-16" style="margin-right:15px;"><a href="./login_page.html" style="text-decoration: none;">Login</a></div>
+            <div class="w3-center w3-padding-16">The Jasmine Dragon</div>
+        </div>
+    </div>
+    <div class="w3-main w3-content w3-padding" style="max-width:1200px;margin-top:75px">
+        <center>
+            <a href='index.html' style='color: darkgreen;'>Home<a>&nbsp&nbsp&nbsp;
             <script>
                 // This makes a navigation bar to other product pages
                 for (products_key in products_data) {
                     if (products_key == this_product_key) continue;
-                    document.write(`<a href='./display_products.html?products_key=${products_key}'>${products_key}<a>&nbsp&nbsp&nbsp;`);
+                    document.write(`<a style='color: darkgreen;' href='./display_products.html?products_key=${products_key}'>${products_key}<a>&nbsp&nbsp&nbsp;`);
                 }
             </script>
 </center>
@@ -41,16 +63,16 @@
             order_str += `You want ${params.get(`quantities${i}`)} of ${products[i]['name']}<br>`;
         }
     } else {
-        order_str += `<h1>Please select what ${products_key} you want</h1><br>`;
+        order_str += `<center><h1>${products_key}</h1></center><br>`;
         // We put the whole table in the form so that anything entered in it will get submitted
-        order_str += `
+        order_str += `<center>
             <FORM action="" method="GET">
             <INPUT TYPE="HIDDEN" NAME="products_key" VALUE="${products_key}">
                 <TABLE BORDER>
-                    <TR><TD><B><BIG>Description</TD><TD><B><BIG>Price</TD><TD><B><BIG>Quantity Desired</TD></TR>`;
+                    <TR><TD><B><BIG>Variety</TD><TD><B><BIG>Price</TD><TD><B><BIG>Quantity</TD></TR></center>`;
 
         for (i = 0; i < products.length; i++) {
-            order_str += `<TR><TD>${products[i]['name']}</TD><TD>${products[i]['price']}</TD><TD>
+            order_str += `<TR><TD>${products[i]['type']}</TD><TD>${products[i]['price']}</TD><TD>
                 <INPUT TYPE="TEXT"  name="quantities${i}"></TD></TR>`;
         }
         order_str += `</TABLE><br>
@@ -59,3 +81,4 @@
     } // this closes the else for the form and table display
     document.write(order_str);
 </script>
+</body>

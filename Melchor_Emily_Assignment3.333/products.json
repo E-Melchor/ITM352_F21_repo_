@@ -1,0 +1,78 @@
+{
+    "Green Tea": [{
+            "type": "Matcha",
+            "price": 2.50,
+            "quantity": 10
+
+        },
+        {
+            "type": "Jasmine",
+            "price": 3.50,
+            "quantity": 10
+
+        },
+        {
+            "type": "Sencha",
+            "price": 4.50,
+            "quantity": 10
+
+        }
+    ],
+    "Black Tea": [{
+            "type": "Earl Grey",
+            "price": 2.50,
+            "quantity": 10
+
+        },
+        {
+            "type": "Darjeeling",
+            "price": 3.50,
+            "quantity": 10
+
+        },
+        {
+            "type": "Chai",
+            "price": 4.50,
+            "quantity": 10
+
+        }
+    ],
+    "Oolong Tea": [{
+            "type": "Peach",
+            "price": 2.50,
+            "quantity": 10
+
+        },
+        {
+            "type": "Jin Xuan",
+            "price": 3.50,
+            "quantity": 10
+
+        },
+        {
+            "type": "Red Robe",
+            "price": 4.50,
+            "quantity": 10
+
+        }
+    ],
+    "Rooibos Tea": [{
+            "type": "Red",
+            "price": 2.50,
+            "quantity": 10
+
+        },
+        {
+            "type": "Green",
+            "price": 3.50,
+            "quantity": 10
+
+        },
+        {
+            "type": "Cinnamon",
+            "price": 4.50,
+            "quantity": 10
+
+        }
+    ]
+}

@@ -1,0 +1,25 @@
+[{
+        "flavor": "Jasmine Tea Boba",
+        "image": "jasmine.jpg"
+    },
+    {
+        "flavor": "Green Tea Boba",
+        "image": "matcha.jpg"
+    },
+    {
+        "flavor": "Chai Tea Boba",
+        "image": "chai.jpg"
+    },
+    {
+        "flavor": "Taro Boba",
+        "image": "taro.jpg"
+    },
+    {
+        "flavor": "Brown Sugar Boba",
+        "image": "sugar.jpg"
+    },
+    {
+        "flavor": "Strawberry Boba",
+        "image": "strawberry.jpg"
+    }
+]
