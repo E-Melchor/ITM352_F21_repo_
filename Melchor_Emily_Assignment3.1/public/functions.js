@@ -1,6 +1,3 @@
-/*Emily Melchor
-Home Page
-From Multi_Page_Nav example*/
 // This function asks the server for a "service" and converts the response to text. 
 function loadJSON(service, callback) {
     var xobj = new XMLHttpRequest();
@@ -15,10 +12,10 @@ function loadJSON(service, callback) {
     xobj.send(null);
 }
 
-function nav_bar(this_product_key, products_data) {
+function nav_bar(this_product_key, products) {
     // This makes a navigation bar to other product pages
-    for (let products_key in products_data) {
+    for (let products_key in products) {
         if (products_key == this_product_key) continue;
-        document.write(`<a style='color: darkgreen;' href='./display_products.html?products_key=${products_key}'>${products_key}<a>&nbsp&nbsp&nbsp;`);
+        document.write(`<a href='./display_products.html?products_key=${products_key}'>${products_key}<a>&nbsp&nbsp&nbsp;`);
     }
 }

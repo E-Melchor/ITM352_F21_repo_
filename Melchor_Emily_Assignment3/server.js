@@ -1,112 +1,102 @@
 /*Emily Melchor
-server code modified from Assignments 1 and 2, Multi_Page_Nav example*/
-
-//Javascript modules
+Server
+Modified from Multi_Page_Nav and simple_shopping_cart examples*/
 var express = require('express');
 var app = express();
-var qs = require('querystring');
-const fs = require('fs'); //file system module (login & registration)
+var myParser = require("body-parser");
 var session = require('express-session');
-app.use(session({ secret: "MySecretKey", resave: true, saveUninitialized: true }));
+var products_data = require('./products.json');
+var nodemailer = require('nodemailer');
+var qs = require('qs');
+const fs = require('fs');
 
-//To access inputted data
-app.use(express.urlencoded({ extended: true }));
+app.use(myParser.urlencoded({ extended: true }));
+app.use(session({ secret: "ITM352 rocks!", resave: false, saveUninitialized: true }));
 
-// monitor all requests; from info_server_Ex5.js in Lab13
 app.all('*', function(request, response, next) {
-    console.log(request.method + ' to ' + request.path);
+    // need to initialize an object to store the cart in the session. We do it when there is any request so that we don't have to check it exists
+    // anytime it's used
+    if (typeof request.session.cart == 'undefined') { request.session.cart = {}; }
     next();
 });
 
-//--------------------PRODUCTS--------------------
-//products data (name + img for home page)
-var home_products = require('./home_products.json');
-app.get("/home_products.js", function(request, response) {
-    response.type('.js');
-    var products_str = `var home_products = ${JSON.stringify(home_products)};`;
-    response.send(products_str);
-});
-//products data
-var products_data = require('./products_data.json');
+//--------------------PRODUCTS + CART--------------------
 app.get("/get_products_data", function(request, response) {
     response.json(products_data);
 });
 
-//route to validate quantities on server
-app.post("/purchase", function(request, response, next) {
-    var errors = []; //start with no errors
-    var has_quantity = false; //start with no quantity
-
-    //use loop to validate all product quantities
-    for (i in products) {
-        //access quantities entered from order form
-        let quantity = request.body['quantity_textbox' + i];
-        //check if there is a quantity; if not, has_quantity will still be false
-        if (quantity.length > 0) {
-            has_quantity = true;
-        } else {
-            continue;
-        }
-        //check if quantity is a non-negative integer
-        if (has_quantity == true && isNonNegInt(quantity)) {
-            products[i].total_sold += Number(quantity);
-        }
-        //if quantity is not a non-negative integer, add error (invalid quantity)
-        else {
-            errors[`invalid_quantity${i}`] = `Please enter a valid quantity for ${products[i].flavor}! `;
-        }
-        //check if there is enough in inventory
-        //access quantity_available from json file
-        let inventory = products[i].quantity_available;
-        //if quantity ordered is less than or same as the amount in inventory, reduce inventory by quantity ordered amount 
-        if (Number(quantity) <= inventory) {
-            products[i].quantity_available -= Number(quantity);
-            console.log(`${products[i].quantity_available} is new inventory amount`);
-        }
-        //if there's not enough in inventory, add error (quantity too large)
-        else {
-            errors[`invalid_quantity${i}`] = `Please order a smaller amount of ${products[i].flavor}! `;
-        }
-    }
-    //if there are no quantities, send back to order page with message (need quantities)
-    if (has_quantity == false) {
-        errors['missing_quantities'] = 'Please enter a quantity!';
+app.use(function(request, response, next) {
+    if (request.path != "/display_products.html") { return next(); }
+    if (typeof request.query['Submit'] != 'undefined') {
+        let tmp = request.query;
+        delete tmp["Submit"];
+        request.session.cart = tmp;
     }
 
-    // create query string from request.body
-    var qstring = qs.stringify(request.body);
-
-    //if there's no errors, create a receipt
-    if (Object.keys(errors).length == 0) {
-        response.redirect('./invoice.html?' + qstring);
-    } else {
-        //if there's errors
-        //generate error message based on type of error
-        let error_string = ''; //start with empty error string
-        for (err in errors) {
-            error_string += errors[err];
-            //for each error, add error message to overall error_string
-        }
-        //send back to order page with error message
-        response.redirect('./products_display.html?' + qstring + `&error_string=${error_string}`);
-        console.log(`error_string=${error_string}`);
+    if (typeof request.session.cart != 'undefined') {
+        request.query = Object.assign(request.query, request.session.cart);
     }
+
+    request.path = `${request.path}?${qs.stringify(request.query)}`;
+    console.log('session:', request.session);
+    return next();
 });
 
-function isNonNegInt(q, returnErrors = false) {
-    //If returnErrors is true, array of errors is returned
-    //others return true if q is a non-neg int.
-    errors = []; // assume no errors at first
-    if (q == '') q = 0;
-    if (Number(q) != q) errors.push('Not a number!'); // Check if string is a number value
-    else {
-        if (q < 0) errors.push('Negative value!'); // Check if it is non-negative
-        if (parseInt(q) != q) errors.push('Not an integer!'); // Check that it is an integer
+app.get("/add_to_cart", function(request, response) {
+    var products_key = request.query['products_key']; // get the product key sent from the form post
+    var quantities = request.query['quantities'].map(Number); // Get quantities from the form post and convert strings from form post to numbers
+    request.session.cart[products_key] = quantities; // store the quantities array in the session cart object with the same products_key. 
+    response.redirect('./cart.html');
+});
+
+app.get("/get_cart", function(request, response) {
+    response.json(request.session.cart);
+});
+
+app.get("/checkout", function(request, response) {
+    // Generate HTML invoice string
+    var invoice_str = `Thank you for your order!<table border><th>Quantity</th><th>Item</th>`;
+    var shopping_cart = request.session.cart;
+    for (product_key in products_data) {
+        for (i = 0; i < products_data[product_key].length; i++) {
+            if (typeof shopping_cart[product_key] == 'undefined') continue;
+            qty = shopping_cart[product_key][i];
+            if (qty > 0) {
+                invoice_str += `<tr><td>${qty}</td><td>${products_data[product_key][i].name}</td><tr>`;
+            }
+        }
     }
-    return returnErrors ? errors : (errors.length == 0);
-};
+    invoice_str += '</table>';
+    // Set up mail server. Only will work on UH Network due to security restrictions
+    var transporter = nodemailer.createTransport({
+        host: "mail.hawaii.edu",
+        port: 25,
+        secure: false, // use TLS
+        tls: {
+            // do not fail on invalid certs
+            rejectUnauthorized: false
+        }
+    });
+    var user_email = 'phoney@mt2015.com';
+    var mailOptions = {
+        from: 'phoney_store@bogus.com',
+        to: user_email,
+        subject: 'Your phoney invoice',
+        html: invoice_str
+    };
+    transporter.sendMail(mailOptions, function(error, info) {
+        if (error) {
+            invoice_str += '<br>There was an error and your invoice could not be emailed :(';
+        } else {
+            invoice_str += `<br>Your invoice was mailed to ${user_email}`;
+        }
+        response.send(invoice_str);
+    });
+
+});
 
 //--------------------REGISTRATION--------------------
+//Process registration form; from Assignment 2
 var filename = './user_data.json';
 //have reg data file, so read data and parse into user_reg_info object
 let data_str = fs.readFileSync(filename, 'utf-8');
@@ -197,7 +187,7 @@ app.post("/register", function(request, response) {
 });
 
 //--------------------LOGIN--------------------
-//Process login form; modified from ex4.js in Lab14
+//Process login form; from Assignment 2
 
 app.post("/login", function(request, response) {
     // Redirect to logged in page if ok, back to login page if not
@@ -233,8 +223,5 @@ app.post("/login", function(request, response) {
     }
 });
 
-// route all other GET requests to files in public 
 app.use(express.static('./public'));
-
-// start server
 app.listen(8080, () => console.log(`listening on port 8080`));
