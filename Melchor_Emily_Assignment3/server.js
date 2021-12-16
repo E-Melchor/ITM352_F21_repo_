@@ -1,6 +1,6 @@
 /*Emily Melchor
 Server
-Modified from Multi_Page_Nav and simple_shopping_cart examples*/
+Modified from Assignments 1+2, Multi_Page_Nav and simple_shopping_cart examples*/
 var express = require('express');
 var app = express();
 var myParser = require("body-parser");
